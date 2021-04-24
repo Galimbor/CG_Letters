@@ -1,11 +1,21 @@
-# Computação Gráfica - TP3 Símbolo 3D
+# Computação Gráfica - PL4 Sopa de Simbolos
 > Ana Rocha, a63971
+> Artur Rodrigues, a64592
+> Ricardo Correria, a64007
+> Jean Morelli, a64014
+> Ruben Cruz, a64591
+
 
 ## Objetivo
 Mostrar o símbolo colorido modelado a partir de triângulos. </p>
 
 ## Plataforma de Desenvolvimento
-- [Github](https://github.com/AnaLuciaRocha/CG)
+- [Github](https://github.com/AnaLuciaRocha/CG_Group)
+    1. Clone repo
+    - Chosse a folder where you want to work in your own env
+    - Open console 
+    - $ ```git clone https://github.com/AnaLuciaRocha/CG_Group.git```
+
 - Sistema Operativo: ***Elementary***, versão 5.1.6 Hera (Distribuição Ubuntu)
 - Compilador 
     ```
@@ -171,4 +181,3 @@ Foi pedido um ângulo de 30º em torno do eixo dos Y, o que significa que a letr
     
     8. Quando é pressionada a tecla *Enter* a janela fecha-se e é terminada a execução.
     
-# CG_Group
