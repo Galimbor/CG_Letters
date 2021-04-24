@@ -21,6 +21,15 @@ const unsigned int SCR_HEIGHT = 600;
 //
 const int NUMBER_LETTERS = 5;
 
+const glm::mat4 INITIAL_TRANSLATIONS[NUMBER_LETTERS] = {
+        glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 0.0f, 0.0f)),
+        glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, 0.0f, 0.0f)),
+        glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)),
+        glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, 0.0f)),
+        glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f))
+};
+
+
 // camera settings
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 2.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f); // and looks at the origin
@@ -53,36 +62,27 @@ void genColors(float *colors, int colors_count) {
 
 }
 
+//TODO CAN BE USEFUL LATER
+//void drawLetter(float *indices, int index, GLint MatrixID, unsigned int *VAO, int vertexColorLocation,
+//                 glm::vec4 *selected_colors) {
+//    glBindVertexArray(VAO[index]);
+//    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[index][0][0]);
+//    glUniform4f(vertexColorLocation, selected_colors[index][0], selected_colors[index][1], selected_colors[index][2],
+//                selected_colors[index][3]);
+//    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(float), GL_UNSIGNED_INT, nullptr);
+//}
+
 //============================================
 /* process all input: query GLFW whether relevant keys are pressed/released 
 this frame and react accordingly 
 -----------------------------------------------------------------------*/
-// Funcao que deteta o Enter
-void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        cameraPos = glm::vec3(-1.0f, 0.0f, 0.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        cameraPos = glm::vec3(1.0f, 0.0f, 0.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, 100.0f, 1.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, -50.0f, 1.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
-
-    }
-}
 
 void letterPosition() {
-    TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.0f, 0.0f));
-    TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+    TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 0.0f, 0.0f));
+    TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, 0.0f, 0.0f));
     TRANSLATION[2] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
+    TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, 0.0f));
+    TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
 }
 
 // color[0] = fragmentcolor;
@@ -107,6 +107,14 @@ void selectLetterV2(int letter) {
     }
 }
 
+void reset_positions() {
+    TRANSLATION[0] = INITIAL_TRANSLATIONS[0];
+    TRANSLATION[1] = INITIAL_TRANSLATIONS[1];
+    TRANSLATION[2] = INITIAL_TRANSLATIONS[2];
+    TRANSLATION[3] = INITIAL_TRANSLATIONS[3];
+    TRANSLATION[4] = INITIAL_TRANSLATIONS[4];
+}
+
 void selectLetter(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
         selectLetterV2(0);
@@ -123,7 +131,17 @@ void selectLetter(GLFWwindow *window) {
     } else if (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS) {
         selectLetterV2(4);
         SELECTED_LETTERID = 4;
+    } else if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) //TODO JUST FOR TEST
+    {
+        TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, -3.0f, 0.0f));
+        TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, -3.0f, 0.0f));
+        TRANSLATION[2] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, -2.0f, 0.0f));
+        TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -5.0f, 0.0f));
+        TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        reset_positions();
     }
+
 }
 
 // FOR LETTER Beyblades
@@ -5140,15 +5158,7 @@ int main() {
 
     letterPosition();
     // Remember, matrix multiplication is the other way around
-    MVP[0] = PROJECTION * VIEW * MODEL * TRANSLATION[0];
 
-    MVP[1] = PROJECTION * VIEW * MODEL * TRANSLATION[1];
-
-    MVP[2] = PROJECTION * VIEW * MODEL * TRANSLATION[2];
-
-    MVP[3] = PROJECTION * VIEW * MODEL * TRANSLATION[3];
-
-    MVP[4] = PROJECTION * VIEW * MODEL * TRANSLATION[4];
 
 
     // render loop
@@ -5156,7 +5166,6 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         //input
         //.....
-        processInput(window);
 
 
         selectLetter(window);
@@ -5169,6 +5178,15 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
+        MVP[0] = PROJECTION * VIEW * MODEL * TRANSLATION[0];
+
+        MVP[1] = PROJECTION * VIEW * MODEL * TRANSLATION[1];
+
+        MVP[2] = PROJECTION * VIEW * MODEL * TRANSLATION[2];
+
+        MVP[3] = PROJECTION * VIEW * MODEL * TRANSLATION[3];
+
+        MVP[4] = PROJECTION * VIEW * MODEL * TRANSLATION[4];
 
 
 // Get a handle for our "MVP" uniform
@@ -5223,7 +5241,7 @@ int main() {
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[4][0][0]);
         glUniform4f(vertexColorLocation, selected_colors[4][0], selected_colors[4][1], selected_colors[4][2],
                     selected_colors[4][3]);
-        glDrawElements(GL_TRIANGLES, sizeof(indices_delta) / sizeof(float), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_gamma) / sizeof(float), GL_UNSIGNED_INT, nullptr);
 
 
 
