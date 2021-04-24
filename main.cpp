@@ -25,26 +25,27 @@ const unsigned int SCR_HEIGHT = 600;
 const int NUMBER_LETTERS = 5;
 
 // camera settings
-glm::vec3 cameraPos = glm::vec3(0.0f,0.0f,0.5f);
+glm::vec3 cameraPos = glm::vec3(0.0f,0.0f,2.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f,0.0f,0.0f); // and looks at the origin
 glm::vec3 cameraUp = glm::vec3(0.0f,1.0f,0.0f);  // Head is up (set to 0,-1,0 to look upside-down)
 
 
 // MVP MATRIX GLOBAL VARIABLES
 // Model matrix : an identity matrix (model will be at the origin)
-glm::mat4 Model = glm::mat4(1.0f);
-Model = glm::rotate(Model, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
+glm::mat4 MODEL = glm::mat4(1.0f);
 	
 // View camera matrix
-glm::mat4 View = glm::lookAt(
+glm::mat4 VIEW = glm::lookAt(
         cameraPos, //in World Space
         cameraFront, // and looks at the origin
         cameraUp // Head 
 );
 
-glm::mat4 Projection = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,0.1f,100.0f); // In world coordinates
+glm::mat4 PROJECTION; // In world coordinates
 
-glm::mat4 MVP ; 
+glm::mat4 TRANSLATION[NUMBER_LETTERS];
+
+glm::mat4 MVP[NUMBER_LETTERS] ; 
 
 // FOR LETTER Beyblades
 float normalize_x(float x)
@@ -665,6 +666,13 @@ void processInput(GLFWwindow *window)
   }
 }
 
+void letterPosition(){
+	TRANSLATION[0] = glm::translate(glm::mat4(), glm::vec3(1.0f, 0.0f, 0.0f));
+	TRANSLATION[1] = glm::translate(glm::mat4(), glm::vec3(-2.0f, 0.0f, 0.0f));
+	TRANSLATION[2] = glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 0.0f));
+	TRANSLATION[3] = glm::translate(glm::mat4(), glm::vec3(0.0f, -1.0f, 0.0f));
+	TRANSLATION[4] = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));
+}
 /* glfw: whenever the window size changed (by OS or user resize) this
    callback function executes
    -------------------------------------------------------------------*/
@@ -2474,6 +2482,19 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
 
 
 
+	  // Model matrix : an identity matrix (model will be at the origin)
+
+	MODEL = glm::rotate(MODEL, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
+	
+	PROJECTION = glm::ortho(-5.0f,5.0f,-5.0f,5.0f,0.1f,100.0f); // In world coordinates
+  
+	letterPosition();
+      // Remember, matrix multiplication is the other way around
+      MVP[0] = PROJECTION * VIEW * MODEL * 	TRANSLATION[0]; 
+      
+      MVP[1] = PROJECTION * VIEW * MODEL * TRANSLATION[1];
+
+
 
   // render loop
   // -----------
@@ -2492,42 +2513,18 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaderProgram);
-    // glBindVertexArray(VBO);
 
 
 
 // Get a handle for our "MVP" uniform
       unsigned int MatrixID = glGetUniformLocation(shaderProgram, "MVP");
 
-	  // Model matrix : an identity matrix (model will be at the origin)
-    	Model = glm::mat4(1.0f);
-	  Model = glm::rotate(Model, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
-	
-	  // View camera matrix
-     View = glm::lookAt(
-                      cameraPos, //in World Space
-                      cameraFront, // and looks at the origin
-                      cameraUp // Head 
-          );
 
-
-      // Projection matrix : 45 Field of View, 4:3 ratio,
-      // display range : 0.1 unit <-> 100 units
-     // glm::mat4 Projection = glm::perspective(glm::radians(30.0f), 4.0f / 3.0f, 0.1f, 100.0f);
-
-	  Projection = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,0.1f,100.0f); // In world coordinates
-
-    
-      
-	  // Our ModelViewProjection : multiplication of our 3 matrices
-      // Remember, matrix multiplication is the other way around
-      MVP   = Projection * View * Model; 
-      
 
 
    // Send our transformation to the currently bound shader, 
       // in the "MVP" uniform
-      glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+  
 
     //------------------------------------------------------------
 
@@ -2547,9 +2544,12 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
         // glBindVertexArray(0); // no need to unbind it every time 
 
 	glBindVertexArray(VAO[0]);
+	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0][0]);
+
     glDrawElements(GL_TRIANGLES, sizeof(indices_beta) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(VAO[1]);
+    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[1][0][0]);
     glDrawElements(GL_TRIANGLES, sizeof(indices_G) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 
