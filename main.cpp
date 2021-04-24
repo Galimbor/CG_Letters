@@ -635,6 +635,15 @@ void get_symbol_points(float* vertices, int vertices_size, unsigned int* indices
 	
 }
 
+void genColors(float* colors, int colors_count)
+{
+	srand(5674389);
+	for (int i = 0; i < colors_count; i++)
+	{
+		colors[i] = ((float) rand()) / (float) RAND_MAX;
+	}
+	
+}
 
 //============================================
 /* process all input: query GLFW whether relevant keys are pressed/released 
@@ -705,7 +714,7 @@ const char *vertexShaderSource = "#version 330 core\n"
 // declare and define fshader, position in color vector declaration
 // are RGBA from [0,1] simply in and out
 const char *fragmentShaderSource = "#version 330 core\n"
-    "in vec3 fragmentColor;\n;"
+    "in vec3 fragmentColor;\n"
     "out vec3 FragColor;\n"
     "void main()\n"
     "{\n"
@@ -2310,7 +2319,8 @@ unsigned int indices_beta[]={
 float vertices_G[SYMBOL_2D_POINT_COUNT * 3 * 2];
 unsigned int indices_G[SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2)];
 get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2D_TRIANGLE_COUNT * 3 *2 + (SYMBOL_2D_POINT_COUNT * 3 * 2), 0.1f);
-
+float color_G[SYMBOL_2D_POINT_COUNT * 3 * 2 * 3];
+genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
 
 
 //------------------------------------------------------------
@@ -2394,8 +2404,8 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
 
 //    Element buffer OBJECT
 
-    // glBindBuffer(GL_ARRAY_BUFFER, EBO[1]);
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(color_beta), color_beta, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, EBO[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(color_G), color_G, GL_STATIC_DRAW);
 
 //    Element buffer OBJECT
   
