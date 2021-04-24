@@ -669,8 +669,8 @@ void processInput(GLFWwindow *window)
 void letterPosition(){
 	TRANSLATION[0] = glm::translate(glm::mat4(), glm::vec3(1.0f, 0.0f, 0.0f));
 	TRANSLATION[1] = glm::translate(glm::mat4(), glm::vec3(-2.0f, 0.0f, 0.0f));
-	TRANSLATION[2] = glm::translate(glm::mat4(), glm::vec3(0.0f, 1.0f, 0.0f));
-	TRANSLATION[3] = glm::translate(glm::mat4(), glm::vec3(0.0f, -1.0f, 0.0f));
+	TRANSLATION[2] = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f, 0.0f));
+	TRANSLATION[3] = glm::translate(glm::mat4(), glm::vec3(2.0f, 0.0f, 0.0f));
 	TRANSLATION[4] = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));
 }
 /* glfw: whenever the window size changed (by OS or user resize) this
