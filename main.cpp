@@ -14,6 +14,8 @@
 #define SYMBOL_2D_POINT_COUNT 215
 #define SYMBOL_2D_TRIANGLE_COUNT 213
 
+unsigned int SELECTED_LETTERID = -1;
+
 const unsigned int SIMBOL_WIDTH = 501;
 const unsigned int SIMBOL_HEIGHT = 445;
 
@@ -25,15 +27,15 @@ const unsigned int SCR_HEIGHT = 600;
 const int NUMBER_LETTERS = 5;
 
 // camera settings
-glm::vec3 cameraPos = glm::vec3(0.0f,0.0f,2.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f,0.0f,0.0f); // and looks at the origin
-glm::vec3 cameraUp = glm::vec3(0.0f,1.0f,0.0f);  // Head is up (set to 0,-1,0 to look upside-down)
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 2.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f); // and looks at the origin
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);  // Head is up (set to 0,-1,0 to look upside-down)
 
 
 // MVP MATRIX GLOBAL VARIABLES
 // Model matrix : an identity matrix (model will be at the origin)
 glm::mat4 MODEL = glm::mat4(1.0f);
-	
+
 // View camera matrix
 glm::mat4 VIEW = glm::lookAt(
         cameraPos, //in World Space
@@ -45,7 +47,7 @@ glm::mat4 PROJECTION; // In world coordinates
 
 glm::mat4 TRANSLATION[NUMBER_LETTERS];
 
-glm::mat4 MVP[NUMBER_LETTERS] ; 
+glm::mat4 MVP[NUMBER_LETTERS];
 
 // FOR LETTER Beyblades
 float normalize_x(float x) {
@@ -59,6 +61,7 @@ float normalize_y(float y) {
     y -= 1;
     return -y;
 }
+
 
 unsigned int get_next_point(unsigned int prev) {
     unsigned int result;
@@ -350,45 +353,45 @@ void get_symbol_points(float *vertices, int vertices_size, unsigned int *indices
             32, 35, 33,
             33, 35, 34,
 
-		//topside of segment 2
-		37, 17, 126,
-		38, 37, 125,
-		39, 38, 124,
-		40, 39, 123,
-		41, 40, 122,
-		42, 41, 121,
-		43, 42, 120,
-		44, 43, 119,
-		45, 44, 118,
-		46, 45, 117,
-		47, 46, 96, //might be wrong
-		48, 47, 95, //might be wrong
-		49, 48, 93, //might be wrong
-		50, 49, 92,
-		51, 50, 91,
-		52, 51, 90,
-		53, 52, 89,
-		54, 53, 88,
-		55, 54, 87,
-		56, 55, 86,
-		57, 56, 85,
-		58, 57, 84,
-		59, 58, 83,
-		60, 59, 82,
-		61, 60, 81,
-		62, 61, 80,
-		63, 62, 79,
-		64, 63, 79,
-		65, 64, 79,
-		66, 65, 78,
-		67, 66, 78,
-		68, 67, 77,
-		69, 68, 77,
-		70, 69, 77,
-		71, 70, 76,
-		72, 71, 76,
-		73, 72, 75,
-		74, 73, 75,
+            //topside of segment 2
+            37, 17, 126,
+            38, 37, 125,
+            39, 38, 124,
+            40, 39, 123,
+            41, 40, 122,
+            42, 41, 121,
+            43, 42, 120,
+            44, 43, 119,
+            45, 44, 118,
+            46, 45, 117,
+            47, 46, 96, //might be wrong
+            48, 47, 95, //might be wrong
+            49, 48, 93, //might be wrong
+            50, 49, 92,
+            51, 50, 91,
+            52, 51, 90,
+            53, 52, 89,
+            54, 53, 88,
+            55, 54, 87,
+            56, 55, 86,
+            57, 56, 85,
+            58, 57, 84,
+            59, 58, 83,
+            60, 59, 82,
+            61, 60, 81,
+            62, 61, 80,
+            63, 62, 79,
+            64, 63, 79,
+            65, 64, 79,
+            66, 65, 78,
+            67, 66, 78,
+            68, 67, 77,
+            69, 68, 77,
+            70, 69, 77,
+            71, 70, 76,
+            72, 71, 76,
+            73, 72, 75,
+            74, 73, 75,
 
             97, 46, 116,
 
@@ -445,199 +448,185 @@ void get_symbol_points(float *vertices, int vertices_size, unsigned int *indices
             126, 125, 37,
             18, 126, 17,
 
-		//topside of segment 3
-		127, 74, 75,
-		128, 127, 214,
-		129, 128, 213,
-		130, 129, 212,
-		131, 130, 211,
-		132, 131, 210,
-		133, 132, 209,
-		134, 133, 208,
-		135, 134, 207,
-		136, 135, 206,
-		137, 136, 205,
-		138, 137, 204,
-		139, 138, 204,
-		140, 139, 204,
-		141, 140, 203,
-		142, 141, 202,
-		143, 142, 201,
-		144, 143, 200,
-		145, 144, 200,
-		146, 145, 199,
-		147, 146, 198,
-		148, 147, 196,
-		149, 148, 194,
-		150, 149, 193,
-		151, 150, 192,
-		152, 151, 191,
-		153, 152, 191,
-		154, 153, 191,
-		155, 154, 191,
-		156, 155, 190,
-		157, 156, 190,
-		158, 157, 190,
-		159, 158, 189,
-		160, 159, 188,
-		161, 160, 187,
-		162, 161, 186,
-		163, 162, 186,
-		164, 163, 185,
-		165, 164, 185,
-		166, 165, 185,
-		167, 166, 184,
-		168, 167, 183,
-		169, 168, 182,
-		170, 169, 182,
-		171, 170, 181,
-		172, 171, 180,
-		173, 172, 179,
-		174, 173, 178,
-		175, 174, 177,
-		176, 175, 177,
-		178, 177, 174,
-		179, 178, 173,
-		180, 179, 172,
-		181, 180, 171,
-		182, 181, 170,
-		183, 182, 168,
-		184, 183, 167,
-		185, 184, 166,
-		186, 185, 163,
-		187, 186, 161,
-		188, 187, 160,
-		189, 188, 159,
-		190, 189, 158,
-		191, 190, 155,
-		192, 191, 151,
-		193, 192, 150,
-		194, 193, 149,
-		195, 194, 148,
-		196, 195, 148,
-		197, 196, 147,
-		198, 197, 147,
-		199, 198, 146,
-		200, 199, 145,
-		201, 200, 143,
-		202, 201, 142,
-		203, 202, 141,
-		204, 203, 140,
-		205, 204, 137,
-		206, 205, 136,
-		207, 206, 135,
-		208, 207, 134,
-		209, 208, 133,
-		210, 209, 132,
-		211, 210, 131,
-		212, 211, 130,
-		213, 212, 129,
-		214, 213, 128,
-		75, 214, 127
-  	};
+            //topside of segment 3
+            127, 74, 75,
+            128, 127, 214,
+            129, 128, 213,
+            130, 129, 212,
+            131, 130, 211,
+            132, 131, 210,
+            133, 132, 209,
+            134, 133, 208,
+            135, 134, 207,
+            136, 135, 206,
+            137, 136, 205,
+            138, 137, 204,
+            139, 138, 204,
+            140, 139, 204,
+            141, 140, 203,
+            142, 141, 202,
+            143, 142, 201,
+            144, 143, 200,
+            145, 144, 200,
+            146, 145, 199,
+            147, 146, 198,
+            148, 147, 196,
+            149, 148, 194,
+            150, 149, 193,
+            151, 150, 192,
+            152, 151, 191,
+            153, 152, 191,
+            154, 153, 191,
+            155, 154, 191,
+            156, 155, 190,
+            157, 156, 190,
+            158, 157, 190,
+            159, 158, 189,
+            160, 159, 188,
+            161, 160, 187,
+            162, 161, 186,
+            163, 162, 186,
+            164, 163, 185,
+            165, 164, 185,
+            166, 165, 185,
+            167, 166, 184,
+            168, 167, 183,
+            169, 168, 182,
+            170, 169, 182,
+            171, 170, 181,
+            172, 171, 180,
+            173, 172, 179,
+            174, 173, 178,
+            175, 174, 177,
+            176, 175, 177,
+            178, 177, 174,
+            179, 178, 173,
+            180, 179, 172,
+            181, 180, 171,
+            182, 181, 170,
+            183, 182, 168,
+            184, 183, 167,
+            185, 184, 166,
+            186, 185, 163,
+            187, 186, 161,
+            188, 187, 160,
+            189, 188, 159,
+            190, 189, 158,
+            191, 190, 155,
+            192, 191, 151,
+            193, 192, 150,
+            194, 193, 149,
+            195, 194, 148,
+            196, 195, 148,
+            197, 196, 147,
+            198, 197, 147,
+            199, 198, 146,
+            200, 199, 145,
+            201, 200, 143,
+            202, 201, 142,
+            203, 202, 141,
+            204, 203, 140,
+            205, 204, 137,
+            206, 205, 136,
+            207, 206, 135,
+            208, 207, 134,
+            209, 208, 133,
+            210, 209, 132,
+            211, 210, 131,
+            212, 211, 130,
+            213, 212, 129,
+            214, 213, 128,
+            75, 214, 127
+    };
 
-	int vertices_front_size = vertices_size;
-	int vertices_back_size = 0;
-	int indices_front_size = indices_size;
-	int indices_back_size = 0;
-	int indices_side_size = 0;
-	if (depth > 0.0f)
-	{
-		vertices_front_size /= 2;
-		vertices_back_size = vertices_front_size;
-		
-		//not sure
-		
-		indices_side_size = vertices_front_size * 2;
-		indices_front_size = (indices_front_size - indices_side_size) / 2;
-		//printf("%u", indices_front_size);
-		indices_back_size = indices_front_size;
-		//not sure
-	}
-	//printf("vertice: ");
-	for (int i = 0; i < vertices_front_size; i++)
-	{
-		if (i % 3 != 2)
-		{
-			vertices[i] = symbol_2D_points[i];
-			//printf("%f, ", vertices[i]);
-		}
-		else
-		{
-			vertices[i] = symbol_2D_points[i] + depth / 2;
-			//printf("%f\nvertice: ", vertices[i]);
-		}
-	}
+    int vertices_front_size = vertices_size;
+    int vertices_back_size = 0;
+    int indices_front_size = indices_size;
+    int indices_back_size = 0;
+    int indices_side_size = 0;
+    if (depth > 0.0f) {
+        vertices_front_size /= 2;
+        vertices_back_size = vertices_front_size;
 
-	//printf("Back vertice: ");
-	for (int i = 0; i < vertices_back_size; i++)
-	{
-		if (i % 3 != 2)
-		{
-			vertices[i + vertices_front_size] = symbol_2D_points[i];
-			//printf("%f, ", vertices[i + vertices_front_size]);
-		}
-		else
-		{
-			vertices[i + vertices_front_size] = symbol_2D_points[i] - depth / 2;
-			//printf("%f\nBack vertice: ", vertices[i + vertices_front_size]);
-		}
-	}
+        //not sure
 
-	//printf("indice: ");
-	for (int i = 0; i < indices_front_size; i++)
-	{
-		indices[i] = symbol_2D_indices[i];
-		//if (i % 3 != 2)
-		//{
-		//	printf("%u, ", indices[i]);
-		//}
-		//else
-		//{
-		//	printf("%u\nindice: ", indices[i]);
-		//}
-	}
+        indices_side_size = vertices_front_size * 2;
+        indices_front_size = (indices_front_size - indices_side_size) / 2;
+        //printf("%u", indices_front_size);
+        indices_back_size = indices_front_size;
+        //not sure
+    }
+    //printf("vertice: ");
+    for (int i = 0; i < vertices_front_size; i++) {
+        if (i % 3 != 2) {
+            vertices[i] = symbol_2D_points[i];
+            //printf("%f, ", vertices[i]);
+        } else {
+            vertices[i] = symbol_2D_points[i] + depth / 2;
+            //printf("%f\nvertice: ", vertices[i]);
+        }
+    }
 
-	for (int i = 0; i < indices_back_size; i+=3)
-	{
-		indices[i + indices_front_size] = symbol_2D_indices[i + 2] + vertices_front_size / 3;
-		indices[i + indices_front_size + 1] = symbol_2D_indices[i + 1] + vertices_front_size / 3;
-		indices[i + indices_front_size + 2] = symbol_2D_indices[i] + vertices_front_size / 3;
+    //printf("Back vertice: ");
+    for (int i = 0; i < vertices_back_size; i++) {
+        if (i % 3 != 2) {
+            vertices[i + vertices_front_size] = symbol_2D_points[i];
+            //printf("%f, ", vertices[i + vertices_front_size]);
+        } else {
+            vertices[i + vertices_front_size] = symbol_2D_points[i] - depth / 2;
+            //printf("%f\nBack vertice: ", vertices[i + vertices_front_size]);
+        }
+    }
 
-		//printf("Back indice: %u, %u, %u\n", indices[i + indices_front_size], indices[i + indices_front_size + 1], indices[i + indices_front_size + 2]);
-	}
+    //printf("indice: ");
+    for (int i = 0; i < indices_front_size; i++) {
+        indices[i] = symbol_2D_indices[i];
+        //if (i % 3 != 2)
+        //{
+        //	printf("%u, ", indices[i]);
+        //}
+        //else
+        //{
+        //	printf("%u\nindice: ", indices[i]);
+        //}
+    }
 
-	unsigned int current_point = 0;
-	for (int i = 0; i < indices_side_size; i+=6)
-	{
-		unsigned int next_point = get_next_point(current_point);
-		indices[i + indices_front_size + indices_back_size] = current_point;
-		indices[i + indices_front_size + indices_back_size + 1] = next_point;
-		indices[i + indices_front_size + indices_back_size + 2] = next_point + vertices_front_size / 3;
+    for (int i = 0; i < indices_back_size; i += 3) {
+        indices[i + indices_front_size] = symbol_2D_indices[i + 2] + vertices_front_size / 3;
+        indices[i + indices_front_size + 1] = symbol_2D_indices[i + 1] + vertices_front_size / 3;
+        indices[i + indices_front_size + 2] = symbol_2D_indices[i] + vertices_front_size / 3;
+
+        //printf("Back indice: %u, %u, %u\n", indices[i + indices_front_size], indices[i + indices_front_size + 1], indices[i + indices_front_size + 2]);
+    }
+
+    unsigned int current_point = 0;
+    for (int i = 0; i < indices_side_size; i += 6) {
+        unsigned int next_point = get_next_point(current_point);
+        indices[i + indices_front_size + indices_back_size] = current_point;
+        indices[i + indices_front_size + indices_back_size + 1] = next_point;
+        indices[i + indices_front_size + indices_back_size + 2] = next_point + vertices_front_size / 3;
 
 
-		indices[i + indices_front_size + indices_back_size + 3] = current_point;
-		indices[i + indices_front_size + indices_back_size + 4] = next_point + vertices_front_size / 3;
-		indices[i + indices_front_size + indices_back_size + 5] = current_point + vertices_front_size / 3;
-		//printf("current point: %u\n", current_point);
-		//printf("triag1: %u, %u, %u\n", indices[i + indices_front_size + indices_back_size], indices[i + indices_front_size + indices_back_size + 1], indices[i + indices_front_size + indices_back_size + 2]);
-		//printf("triag2: %u, %u, %u\n", indices[i + indices_front_size + indices_back_size + 3], indices[i + indices_front_size + indices_back_size + 4], indices[i + indices_front_size + indices_back_size + 5]);
-		//printf("--------------------------------\n");
+        indices[i + indices_front_size + indices_back_size + 3] = current_point;
+        indices[i + indices_front_size + indices_back_size + 4] = next_point + vertices_front_size / 3;
+        indices[i + indices_front_size + indices_back_size + 5] = current_point + vertices_front_size / 3;
+        //printf("current point: %u\n", current_point);
+        //printf("triag1: %u, %u, %u\n", indices[i + indices_front_size + indices_back_size], indices[i + indices_front_size + indices_back_size + 1], indices[i + indices_front_size + indices_back_size + 2]);
+        //printf("triag2: %u, %u, %u\n", indices[i + indices_front_size + indices_back_size + 3], indices[i + indices_front_size + indices_back_size + 4], indices[i + indices_front_size + indices_back_size + 5]);
+        //printf("--------------------------------\n");
 
-		current_point = next_point;
-	}
-	
-	
+        current_point = next_point;
+    }
+
+
 }
 
-void genColors(float* colors, int colors_count)
-{
-	srand(5674389);
-	for (int i = 0; i < colors_count; i++)
-	{
-		colors[i] = ((float) rand()) / (float) RAND_MAX;
-	}
-	
+void genColors(float *colors, int colors_count) {
+    srand(5674389);
+    for (int i = 0; i < colors_count; i++) {
+        colors[i] = ((float) rand()) / (float) RAND_MAX;
+    }
+
 }
 
 //============================================
@@ -645,142 +634,121 @@ void genColors(float* colors, int colors_count)
 this frame and react accordingly 
 -----------------------------------------------------------------------*/
 // Funcao que deteta o Enter
-void processInput(GLFWwindow *window)
-{
-  if(glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, true);
-  if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS){
-	cameraPos = glm::vec3(-1.0f,0.0f,0.0f);
-  }
-  else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-  	cameraPos = glm::vec3(1.0f,0.0f,0.0f);
-  }
-  else if(glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS){
-    cameraPos = glm::vec3(0.0f,100.0f,1.0f);
-  }
-  else if(glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS){
-    cameraPos = glm::vec3(0.0f,-50.0f,1.0f);
-  }
-  else if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS){
-    cameraPos = glm::vec3(0.0f,0.0f,1.0f);
-  }
-  else if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-    cameraPos = glm::vec3(0.0f,0.0f,-1.0f);
+void processInput(GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        cameraPos = glm::vec3(-1.0f, 0.0f, 0.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        cameraPos = glm::vec3(1.0f, 0.0f, 0.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, 100.0f, 1.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, -50.0f, 1.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
 
-  }
+    }
 }
 
-void letterPosition(){
-	TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.0f, 0.0f));
-	TRANSLATION[2] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 0.0f, 0.0f));
-	TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
-	TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+void letterPosition() {
+    TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 0.0f, 0.0f));
+    TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.0f, 0.0f));
+    TRANSLATION[2] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
+    TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
 }
 
 // color[0] = fragmentcolor;
 // select color[0] = preto;
 
 glm::vec4 selected_colors[] = {
-	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
-	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
-	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
-	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
-	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f)
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f)
 };
 
-void selectLetterV2(int letter){
+void selectLetterV2(int letter) {
 
-	glm::vec4 selected_color = glm::vec4(1,1,1,1);
-	selected_colors[letter] = selected_color;
-	for(int i = 0 ; i< NUMBER_LETTERS; i++){
-		if(i !=letter)
-		{
-			selected_colors[i] = glm::vec4(-1.0f,-1.0f, -1.0f , 1.0f);
-		}
-	}
+    glm::vec4 selected_color = glm::vec4(1, 1, 1, 1);
+    selected_colors[letter] = selected_color;
+    for (int i = 0; i < NUMBER_LETTERS; i++) {
+        if (i != letter) {
+            selected_colors[i] = glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f);
+        }
+    }
 
 }
 
-void selectLetter(GLFWwindow *window){
-	if(glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
-		selectLetterV2(0);
-	}
+void selectLetter(GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
+        selectLetterV2(0);
+        SELECTED_LETTERID = 0;
+    } else if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
+        selectLetterV2(1);
+        SELECTED_LETTERID = 1;
+    } else if (glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS) {
+        selectLetterV2(2);
+        SELECTED_LETTERID = 2;
+    } else if (glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS) {
+        selectLetterV2(3);
+        SELECTED_LETTERID = 3;
+    } else if (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS) {
+        selectLetterV2(4);
+        SELECTED_LETTERID = 4;
+    }
+
+
 }
 /* glfw: whenever the window size changed (by OS or user resize) this
    callback function executes
    -------------------------------------------------------------------*/
 // Funcao que cria a janela e deteta movimento, dimensoes,etc
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-  // make sure the viewport matches the new window dimensions; note that
-  // width and height will be significantly larger than specified on
-  // retina displays.
-  glViewport(0, 0, width, height);
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+    // make sure the viewport matches the new window dimensions; note that
+    // width and height will be significantly larger than specified on
+    // retina displays.
+    glViewport(0, 0, width, height);
 }
-
-
-
-//------------------------------------------------------------
-// Input vertex data, different for all executions of this shader.
-// Output data color, will be interpolated for each fragment.
-const char *vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec3 vertexColor;\n"
-"out vec3 fragmentColor;\n"
-"uniform mat4 MVP;\n"
-"void main()\n"
-"{\n"
-" gl_Position = MVP * vec4(aPos, 1.0);\n"
-" fragmentColor = vertexColor;\n"
-"}\0";
-
-
-// declare and define fshader, position in color vector declaration
-// are RGBA from [0,1] simply in and out
-const char *fragmentShaderSource = "#version 330 core\n"
-                                   "in vec3 fragmentColor;\n;"
-                                   "out vec4 FragColor;\n"
-	"uniform vec4 newColor;\n"
-                                   "void main()\n"
-                                   "{\n"
-                                   "   if(newColor[0] == -1)\n"
-	    "   	{FragColor = vec4(fragmentColor, 1.0f);}\n"
-		"	else\n"
-	    "   	{FragColor = newColor;}\n"
-                                   "}\n\0";
 
 
 int main() {
 
-  // glfw: initialize and configure
-  // ------------------------------
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    // glfw: initialize and configure
+    // ------------------------------
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  // glfw window creation
-  // --------------------
-  GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sopa de Letras", NULL,
-                                        NULL);
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
-  if (window == NULL)
-  {
-    std::cout << "Failed to create GLFW window" << std::endl;
-    glfwTerminate();
-    return -1;
-  }
-  glfwMakeContextCurrent(window);
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    // glfw window creation
+    // --------------------
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sopa de Letras", NULL,
+                                          NULL);
 
-  // glad: load all OpenGL function pointers
-  // ---------------------------------------
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-  {
-    std::cout << "Failed to initialize GLAD" << std::endl;
-    return -1;
-  }
+
+    if (window == NULL) {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
 
 //------------------------------------------------------------
@@ -788,11 +756,11 @@ int main() {
     // ------------------------------------------------------------------
     // set up vertex data with depth
 // ----------------------------------------
-  // Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive
+    // Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive
     // vertices give a triangle. A cube has 6 faces with 2 triangles each, so this
     // makes 6*2=12 triangles, and 12*3 vertices
     // ------------------------------------------------------------------
-    
+
 
     // One color for each vertex. They were generated randomly.
     static const float color_beta[] =
@@ -2557,6 +2525,788 @@ int main() {
             766, 765, 263, 767, 766, 264, 765, 767, 384,
     };
 
+
+    static const float vertices_B[] = {
+            -0.29f, 0.345f, -0.04f,
+            -0.275f, 0.34f, -0.04f,
+            -0.255f, 0.35f, -0.04f,
+            -0.225f, 0.36f, -0.04f,
+            -0.205f, 0.37f, -0.04f,
+            -0.225f, 0.235f, -0.04f,
+            -0.25f, 0.11f, -0.04f,
+            -0.285f, -0.045f, -0.04f,
+            -0.335f, -0.235f, -0.04f,
+            -0.37f, -0.33f, -0.04f,
+            -0.41f, -0.415f, -0.04f,
+            -0.425f, -0.45f, -0.04f,
+            -0.405f, -0.455f, -0.04f,
+            -0.38f, -0.45f, -0.04f,
+            -0.33f, -0.415f, -0.04f,
+            -0.295f, -0.36f, -0.04f,
+            -0.255f, -0.27f, -0.04f,
+            -0.215f, -0.155f, -0.04f,
+            -0.18f, -0.025f, -0.04f,
+            -0.135f, 0.09f, -0.04f,
+            -0.09f, 0.195f, -0.04f,
+            -0.03f, 0.275f, -0.04f,
+            0.015f, 0.335f, -0.04f,
+            0.065f, 0.375f, -0.04f,
+            0.12f, 0.39f, -0.04f,
+            0.17f, 0.39f, -0.04f,
+            0.215f, 0.38f, -0.04f,
+            0.255f, 0.36f, -0.04f,
+            0.285f, 0.33f, -0.04f,
+            0.295f, 0.285f, -0.04f,
+            0.285f, 0.235f, -0.04f,
+            0.26f, 0.195f, -0.04f,
+            0.215f, 0.16f, -0.04f,
+            0.14f, 0.125f, -0.04f,
+            0.03f, 0.085f, -0.04f,
+            -0.03f, 0.06f, -0.04f,
+            -0.055f, 0.04f, -0.04f,
+            -0.07f, 0.025f, -0.04f,
+            -0.065f, 0.01f, -0.04f,
+            -0.04f, 0.01f, -0.04f,
+            0.015f, 0.015f, -0.04f,
+            0.085f, 0.005f, -0.04f,
+            0.155f, -0.015f, -0.04f,
+            0.205f, -0.065f, -0.04f,
+            0.235f, -0.115f, -0.04f,
+            0.25f, -0.175f, -0.04f,
+            0.24f, -0.245f, -0.04f,
+            0.215f, -0.3f, -0.04f,
+            0.155f, -0.35f, -0.04f,
+            0.095f, -0.38f, -0.04f,
+            0.02f, -0.39f, -0.04f,
+            -0.04f, -0.39f, -0.04f,
+            -0.105f, -0.375f, -0.04f,
+            -0.15f, -0.345f, -0.04f,
+            -0.18f, -0.315f, -0.04f,
+            -0.195f, -0.305f, -0.04f,
+            -0.24f, -0.32f, -0.04f,
+            -0.275f, -0.345f, -0.04f,
+            -0.29f, -0.37f, -0.04f,
+            -0.295f, -0.375f, -0.04f,
+            -0.245f, -0.42f, -0.04f,
+            -0.2f, -0.445f, -0.04f,
+            -0.135f, -0.46f, -0.04f,
+            -0.085f, -0.465f, -0.04f,
+            -0.015f, -0.455f, -0.04f,
+            0.07f, -0.435f, -0.04f,
+            0.165f, -0.395f, -0.04f,
+            0.25f, -0.34f, -0.04f,
+            0.31f, -0.28f, -0.04f,
+            0.345f, -0.21f, -0.04f,
+            0.36f, -0.145f, -0.04f,
+            0.355f, -0.085f, -0.04f,
+            0.34f, -0.03f, -0.04f,
+            0.31f, 0.0f, -0.04f,
+            0.265f, 0.04f, -0.04f,
+            0.205f, 0.07f, -0.04f,
+            0.15f, 0.085f, -0.04f,
+            0.215f, 0.115f, -0.04f,
+            0.29f, 0.16f, -0.04f,
+            0.345f, 0.21f, -0.04f,
+            0.385f, 0.265f, -0.04f,
+            0.405f, 0.325f, -0.04f,
+            0.4f, 0.375f, -0.04f,
+            0.375f, 0.42f, -0.04f,
+            0.33f, 0.445f, -0.04f,
+            0.275f, 0.46f, -0.04f,
+            0.2f, 0.46f, -0.04f,
+            0.135f, 0.44f, -0.04f,
+            0.065f, 0.415f, -0.04f,
+            0.0f, 0.37f, -0.04f,
+            -0.065f, 0.32f, -0.04f,
+            -0.12f, 0.255f, -0.04f,
+            -0.105f, 0.365f, -0.04f,
+            -0.095f, 0.455f, -0.04f,
+            -0.105f, 0.46f, -0.04f,
+            -0.275f, 0.37f, -0.04f,
+            -0.29f, 0.365f, -0.04f,
+            -0.29f, 0.345f, 0.04f,
+            -0.275f, 0.34f, 0.04f,
+            -0.255f, 0.35f, 0.04f,
+            -0.225f, 0.36f, 0.04f,
+            -0.205f, 0.37f, 0.04f,
+            -0.225f, 0.235f, 0.04f,
+            -0.25f, 0.11f, 0.04f,
+            -0.285f, -0.045f, 0.04f,
+            -0.335f, -0.235f, 0.04f,
+            -0.37f, -0.33f, 0.04f,
+            -0.41f, -0.415f, 0.04f,
+            -0.425f, -0.45f, 0.04f,
+            -0.405f, -0.455f, 0.04f,
+            -0.38f, -0.45f, 0.04f,
+            -0.33f, -0.415f, 0.04f,
+            -0.295f, -0.36f, 0.04f,
+            -0.255f, -0.27f, 0.04f,
+            -0.215f, -0.155f, 0.04f,
+            -0.18f, -0.025f, 0.04f,
+            -0.135f, 0.09f, 0.04f,
+            -0.09f, 0.195f, 0.04f,
+            -0.03f, 0.275f, 0.04f,
+            0.015f, 0.335f, 0.04f,
+            0.065f, 0.375f, 0.04f,
+            0.12f, 0.39f, 0.04f,
+            0.17f, 0.39f, 0.04f,
+            0.215f, 0.38f, 0.04f,
+            0.255f, 0.36f, 0.04f,
+            0.285f, 0.33f, 0.04f,
+            0.295f, 0.285f, 0.04f,
+            0.285f, 0.235f, 0.04f,
+            0.26f, 0.195f, 0.04f,
+            0.215f, 0.16f, 0.04f,
+            0.14f, 0.125f, 0.04f,
+            0.03f, 0.085f, 0.04f,
+            -0.03f, 0.06f, 0.04f,
+            -0.055f, 0.04f, 0.04f,
+            -0.07f, 0.025f, 0.04f,
+            -0.065f, 0.01f, 0.04f,
+            -0.04f, 0.01f, 0.04f,
+            0.015f, 0.015f, 0.04f,
+            0.085f, 0.005f, 0.04f,
+            0.155f, -0.015f, 0.04f,
+            0.205f, -0.065f, 0.04f,
+            0.235f, -0.115f, 0.04f,
+            0.25f, -0.175f, 0.04f,
+            0.24f, -0.245f, 0.04f,
+            0.215f, -0.3f, 0.04f,
+            0.155f, -0.35f, 0.04f,
+            0.095f, -0.38f, 0.04f,
+            0.02f, -0.39f, 0.04f,
+            -0.04f, -0.39f, 0.04f,
+            -0.105f, -0.375f, 0.04f,
+            -0.15f, -0.345f, 0.04f,
+            -0.18f, -0.315f, 0.04f,
+            -0.195f, -0.305f, 0.04f,
+            -0.24f, -0.32f, 0.04f,
+            -0.275f, -0.345f, 0.04f,
+            -0.29f, -0.37f, 0.04f,
+            -0.295f, -0.375f, 0.04f,
+            -0.245f, -0.42f, 0.04f,
+            -0.2f, -0.445f, 0.04f,
+            -0.135f, -0.46f, 0.04f,
+            -0.085f, -0.465f, 0.04f,
+            -0.015f, -0.455f, 0.04f,
+            0.07f, -0.435f, 0.04f,
+            0.165f, -0.395f, 0.04f,
+            0.25f, -0.34f, 0.04f,
+            0.31f, -0.28f, 0.04f,
+            0.345f, -0.21f, 0.04f,
+            0.36f, -0.145f, 0.04f,
+            0.355f, -0.085f, 0.04f,
+            0.34f, -0.03f, 0.04f,
+            0.31f, 0.0f, 0.04f,
+            0.265f, 0.04f, 0.04f,
+            0.205f, 0.07f, 0.04f,
+            0.15f, 0.085f, 0.04f,
+            0.215f, 0.115f, 0.04f,
+            0.29f, 0.16f, 0.04f,
+            0.345f, 0.21f, 0.04f,
+            0.385f, 0.265f, 0.04f,
+            0.405f, 0.325f, 0.04f,
+            0.4f, 0.375f, 0.04f,
+            0.375f, 0.42f, 0.04f,
+            0.33f, 0.445f, 0.04f,
+            0.275f, 0.46f, 0.04f,
+            0.2f, 0.46f, 0.04f,
+            0.135f, 0.44f, 0.04f,
+            0.065f, 0.415f, 0.04f,
+            0.0f, 0.37f, 0.04f,
+            -0.065f, 0.32f, 0.04f,
+            -0.12f, 0.255f, 0.04f,
+            -0.105f, 0.365f, 0.04f,
+            -0.095f, 0.455f, 0.04f,
+            -0.105f, 0.46f, 0.04f,
+            -0.275f, 0.37f, 0.04f,
+            -0.29f, 0.365f, 0.04f,
+    };
+
+    static const float color_B[] = {
+            0.019917032f, 0.212616708f, 0.612670898f,
+            0.892475874f, 0.550852135f, 0.576453439f,
+            0.364889827f, 0.347508816f, 0.681075775f,
+            0.090701238f, 0.876065739f, 0.370431966f,
+            0.625016086f, 0.689093796f, 0.840390597f,
+            0.947178301f, 0.824517267f, 0.502793616f,
+            0.737031742f, 0.412925735f, 0.085295307f,
+            0.374366041f, 0.946148789f, 0.847667295f,
+            0.590068545f, 0.319542496f, 0.589031328f,
+            0.637841894f, 0.679705562f, 0.534851489f,
+            0.317970427f, 0.173042063f, 0.067555867f,
+            0.454854025f, 0.195881704f, 0.557504546f,
+            0.514460021f, 0.999704388f, 0.09315608f,
+            0.073606849f, 0.853950876f, 0.202797235f,
+            0.846513314f, 0.510184754f, 0.007129273f,
+            0.031368754f, 0.903842954f, 0.267006606f,
+            0.738526553f, 0.822520662f, 0.285249065f,
+            0.74315892f, 0.640049118f, 0.748962449f,
+            0.759163247f, 0.711704944f, 0.878402521f,
+            0.617849842f, 0.990312127f, 0.997997731f,
+            0.760272292f, 0.397647935f, 0.638620216f,
+            0.894266543f, 0.213945545f, 0.910642147f,
+            0.733656275f, 0.297921096f, 0.438186367f,
+            0.13034786f, 0.416373208f, 0.513388652f,
+            0.609423078f, 0.883709357f, 0.094421875f,
+            0.458858468f, 0.481674329f, 0.930518725f,
+            0.272945462f, 0.873760139f, 0.463194172f,
+            0.396039696f, 0.264727219f, 0.967800201f,
+            0.704293296f, 0.934061117f, 0.937910893f,
+            0.482397044f, 0.70712729f, 0.067884083f,
+            0.491971996f, 0.169809659f, 0.913836897f,
+            0.063369483f, 0.082078786f, 0.607167243f,
+            0.168580312f, 0.568082402f, 0.67977083f,
+            0.005981384f, 0.124192531f, 0.603270796f,
+            0.515405773f, 0.700947496f, 0.304016625f,
+            0.548993303f, 0.4988284f, 0.64488601f,
+            0.551709989f, 0.022691381f, 0.717428585f,
+            0.716079176f, 0.657789132f, 0.308033374f,
+            0.215301762f, 0.21481051f, 0.299579709f,
+            0.462923147f, 0.073107396f, 0.222759583f,
+            0.469423246f, 0.012319835f, 0.951474872f,
+            0.686938815f, 0.057396075f, 0.440205897f,
+            0.999559368f, 0.495835733f, 0.926695903f,
+            0.380183423f, 0.372829104f, 0.985498704f,
+            0.521032833f, 0.663788426f, 0.473309881f,
+            0.483883225f, 0.478359378f, 0.495557388f,
+            0.316569292f, 0.488569435f, 0.800786277f,
+            0.267715309f, 0.126026768f, 0.981719768f,
+            0.9134904f, 0.080412958f, 0.98871072f,
+            0.086236207f, 0.010106587f, 0.702475536f,
+            0.10009304f, 0.924166479f, 0.234019178f,
+            0.600754f, 0.736165188f, 0.549661879f,
+            0.760839552f, 0.260267155f, 0.676839617f,
+            0.097744043f, 0.376788626f, 0.808592992f,
+            0.883622609f, 0.481168586f, 0.082372963f,
+            0.14445476f, 0.183303771f, 0.318434608f,
+            0.134399138f, 0.243453446f, 0.07712483f,
+            0.501517981f, 0.115416974f, 0.772556154f,
+            0.254231812f, 0.335326907f, 0.591545037f,
+            0.780731775f, 0.11948678f, 0.631933875f,
+            0.845878697f, 0.09921903f, 0.873749396f,
+            0.099957242f, 0.696555678f, 0.970173849f,
+            0.896831814f, 0.151757091f, 0.897224458f,
+            0.278787271f, 0.980894894f, 0.102972574f,
+            0.385220765f, 0.268892499f, 0.168223325f,
+            0.866389561f, 0.460884168f, 0.761158748f,
+            0.751454728f, 0.59276797f, 0.379986852f,
+            0.320563109f, 0.795297953f, 0.824122808f,
+            0.962029436f, 0.161434376f, 0.681886724f,
+            0.900179539f, 0.134646951f, 0.529604851f,
+            0.771629723f, 0.102177326f, 0.47186562f,
+            0.12093849f, 0.889284583f, 0.362201136f,
+            0.175365574f, 0.348632298f, 0.726590613f,
+            0.789526389f, 0.05819325f, 0.207769274f,
+            0.035912995f, 0.294725798f, 0.503324937f,
+            0.680545704f, 0.386060962f, 0.808691968f,
+            0.502915282f, 0.261151798f, 0.273466809f,
+            0.490688935f, 0.805438158f, 0.048668981f,
+            0.69485521f, 0.399827939f, 0.89773374f,
+            0.31628214f, 0.636439257f, 0.754811926f,
+            0.030223076f, 0.624497812f, 0.099997601f,
+            0.198824415f, 0.473814592f, 0.38530343f,
+            0.954835737f, 0.600047017f, 0.429042445f,
+            0.096638521f, 0.199484438f, 0.895198666f,
+            0.722354282f, 0.160226967f, 0.873878676f,
+            0.828458919f, 0.495907273f, 0.137823917f,
+            0.383250619f, 0.949702268f, 0.760640072f,
+            0.557487381f, 0.096635589f, 0.074782086f,
+            0.580895266f, 0.643263579f, 0.687277872f,
+            0.952246276f, 0.367735957f, 0.908385563f,
+            0.813673222f, 0.956829872f, 0.086267805f,
+            0.796307636f, 0.431376897f, 0.812163373f,
+            0.175181489f, 0.860625862f, 0.884575077f,
+            0.598447218f, 0.366356803f, 0.327371209f,
+            0.055079712f, 0.216943965f, 0.888904031f,
+            0.451017675f, 0.445770596f, 0.287590705f,
+            0.136495899f, 0.219560738f, 0.329543952f,
+            0.891406727f, 0.699310115f, 0.562840456f,
+            0.202283872f, 0.965439022f, 0.099436675f,
+            0.732794607f, 0.55402714f, 0.905011074f,
+            0.908644883f, 0.430615152f, 0.545846116f,
+            0.508061194f, 0.408328577f, 0.726906015f,
+            0.947409326f, 0.211772195f, 0.162409281f,
+            0.014464522f, 0.240136028f, 0.757923966f,
+            0.958718257f, 0.124316944f, 0.071761989f,
+            0.960786825f, 0.611464242f, 0.382160085f,
+            0.063980954f, 0.295198541f, 0.166493636f,
+            0.775526681f, 0.49618194f, 0.412106743f,
+            0.777359637f, 0.156783305f, 0.836650672f,
+            0.355372101f, 0.119853026f, 0.956206729f,
+            0.015626869f, 0.171781962f, 0.793724921f,
+            0.345972775f, 0.506469446f, 0.197305603f,
+            0.442432689f, 0.494707867f, 0.913365202f,
+            0.298843931f, 0.081979213f, 0.849467827f,
+            0.697239222f, 0.999187339f, 0.354518429f,
+            0.187715137f, 0.536403188f, 0.66527007f,
+            0.298393062f, 0.558910069f, 0.059625615f,
+            0.419572688f, 0.848336747f, 0.240901097f,
+            0.098007653f, 0.975750357f, 0.749627267f,
+            0.036698803f, 0.186507338f, 0.210621575f,
+            0.526304253f, 0.382750236f, 0.27296423f,
+            0.216058242f, 0.833208276f, 0.817076767f,
+            0.904686882f, 0.900770148f, 0.675367513f,
+            0.673972328f, 0.517466187f, 0.989000498f,
+            0.293475295f, 0.815757977f, 0.891133382f,
+            0.003476951f, 0.582095629f, 0.508183624f,
+            0.059152244f, 0.894025127f, 0.799990219f,
+            0.466853467f, 0.066075027f, 0.738691425f,
+            0.202469132f, 0.989842641f, 0.931445905f,
+            0.209162522f, 0.154474392f, 0.640770907f,
+            0.172019095f, 0.661973817f, 0.034076979f,
+            0.638030533f, 0.703087826f, 0.07618425f,
+            0.538997902f, 0.142782773f, 0.416043398f,
+            0.463004428f, 0.157313038f, 0.086082705f,
+            0.908605449f, 0.962360756f, 0.089300589f,
+            0.947821564f, 0.648375501f, 0.542456779f,
+            0.120439134f, 0.898454638f, 0.978164337f,
+            0.539321649f, 0.547968647f, 0.854687962f,
+            0.20174562f, 0.261161501f, 0.53675569f,
+            0.116080354f, 0.271281449f, 0.724602187f,
+            0.45069821f, 0.947861186f, 0.512144932f,
+            0.485847623f, 0.777805184f, 0.22603528f,
+            0.671647199f, 0.844877773f, 0.936287114f,
+            0.852965849f, 0.458125411f, 0.934614416f,
+            0.320059558f, 0.132564285f, 0.025328055f,
+            0.046749609f, 0.403194813f, 0.472928409f,
+            0.464947946f, 0.884669604f, 0.568710668f,
+            0.889673762f, 0.625706207f, 0.53104032f,
+            0.811633883f, 0.831358465f, 0.943561515f,
+            0.337809012f, 0.005057805f, 0.444027954f,
+            0.829258269f, 0.053589717f, 0.32824204f,
+            0.771521987f, 0.828286646f, 0.627810643f,
+            0.140770243f, 0.803549962f, 0.303730986f,
+            0.648300271f, 0.030563437f, 0.838609896f,
+            0.931223131f, 0.502027794f, 0.073698942f,
+            0.303874521f, 0.132886837f, 0.396879991f,
+            0.382960404f, 0.834365157f, 0.608557729f,
+            0.990727406f, 0.712893065f, 0.239139711f,
+            0.633273974f, 0.652013478f, 0.259713876f,
+            0.655012001f, 0.772066239f, 0.797719772f,
+            0.048599233f, 0.177207458f, 0.468274395f,
+            0.208139707f, 0.951427975f, 0.451357051f,
+            0.402527169f, 0.294161941f, 0.646171924f,
+            0.654088631f, 0.534801774f, 0.542464607f,
+            0.415993981f, 0.295398947f, 0.621483751f,
+            0.79408151f, 0.132174234f, 0.213451638f,
+            0.323852687f, 0.581468055f, 0.32712223f,
+            0.798484159f, 0.482631824f, 0.342017929f,
+            0.240883359f, 0.554857781f, 0.853421757f,
+            0.352481265f, 0.468668793f, 0.767637765f,
+            0.006329069f, 0.815999262f, 0.657439101f,
+            0.264700641f, 0.267094802f, 0.073137354f,
+            0.127319933f, 0.222757249f, 0.673676571f,
+            0.095479438f, 0.544664157f, 0.285445996f,
+            0.506418742f, 0.811337365f, 0.908765695f,
+            0.438757494f, 0.508655385f, 0.106923709f,
+            0.726846227f, 0.796037803f, 0.307964764f,
+            0.662999456f, 0.80994915f, 0.356182452f,
+            0.589006342f, 0.370267195f, 0.686178248f,
+            0.213072478f, 0.209132814f, 0.652658852f,
+            0.240463339f, 0.786728731f, 0.829348674f,
+            0.363675906f, 0.00292013f, 0.214085651f,
+            0.008078787f, 0.457365848f, 0.802647644f,
+            0.850418174f, 0.236347196f, 0.910862328f,
+            0.568475063f, 0.471402742f, 0.540213642f,
+            0.787280724f, 0.149354859f, 0.299514673f,
+            0.085988831f, 0.083561352f, 0.356120959f,
+            0.210202623f, 0.936186438f, 0.747070345f,
+            0.081457133f, 0.431232783f, 0.294565432f,
+            0.109463031f, 0.365304597f, 0.866902086f,
+            0.579943316f, 0.277610761f, 0.247510302f,
+            0.302704149f, 0.523332707f, 0.24294515f,
+            0.670786354f, 0.854669014f, 0.935639552f,
+            0.002497827f, 0.152696891f, 0.106673891f,
+    };
+
+    static const unsigned int indices_B[] = {
+            62, 158, 159,
+            84, 85, 27,
+            82, 83, 28,
+            79, 29, 30,
+            4, 92, 94,
+            19, 5, 6,
+            83, 84, 28,
+            25, 86, 87,
+            26, 85, 86,
+            60, 61, 53,
+            88, 24, 87,
+            24, 88, 23,
+            26, 86, 25,
+            18, 6, 7,
+            27, 85, 26,
+            81, 82, 28,
+            22, 23, 89,
+            92, 4, 91,
+            3, 4, 95,
+            3, 95, 2,
+            22, 89, 90,
+            39, 37, 38,
+            40, 35, 39,
+            53, 62, 52,
+            2, 95, 1,
+            0, 1, 96,
+            21, 22, 90,
+            81, 28, 29,
+            80, 81, 29,
+            21, 90, 91,
+            80, 29, 79,
+            20, 21, 91,
+            10, 12, 13,
+            20, 91, 5,
+            79, 30, 78,
+            20, 5, 19,
+            60, 54, 56,
+            78, 31, 32,
+            1, 95, 96,
+            78, 32, 77,
+            65, 49, 50,
+            77, 33, 76,
+            77, 32, 33,
+            19, 6, 18,
+            60, 56, 57,
+            76, 34, 41,
+            94, 92, 93,
+            74, 43, 73,
+            41, 34, 40,
+            40, 34, 35,
+            52, 63, 51,
+            4, 94, 95,
+            60, 58, 59,
+            75, 42, 74,
+            39, 36, 37,
+            41, 42, 76,
+            72, 73, 43,
+            14, 9, 10,
+            17, 18, 7,
+            71, 72, 44,
+            17, 7, 8,
+            39, 35, 36,
+            70, 71, 44,
+            70, 44, 45,
+            69, 70, 45,
+            16, 17, 8,
+            69, 45, 46,
+            68, 69, 46,
+            16, 8, 9,
+            68, 46, 47,
+            15, 16, 9,
+            67, 68, 47,
+            67, 47, 48,
+            54, 55, 56,
+            53, 54, 60,
+            15, 9, 14,
+            66, 67, 48,
+            44, 72, 43,
+            60, 57, 58,
+            66, 48, 49,
+            91, 4, 5,
+            28, 84, 27,
+            42, 43, 74,
+            78, 30, 31,
+            66, 49, 65,
+            65, 50, 64,
+            23, 88, 89,
+            76, 33, 34,
+            14, 10, 13,
+            87, 24, 25,
+            76, 42, 75,
+            51, 63, 64,
+            61, 62, 53,
+            11, 12, 10,
+            62, 63, 52,
+            64, 50, 51,
+            173, 139, 138,
+            36, 132, 133,
+            9, 107, 10,
+            89, 185, 186,
+            63, 159, 160,
+            36, 134, 37,
+            10, 108, 11,
+            90, 186, 187,
+            64, 160, 161,
+            37, 135, 38,
+            12, 108, 109,
+            90, 188, 91,
+            65, 161, 162,
+            38, 136, 39,
+            13, 109, 110,
+            92, 188, 189,
+            66, 162, 163,
+            39, 137, 40,
+            14, 110, 111,
+            93, 189, 190,
+            67, 163, 164,
+            41, 137, 138,
+            14, 112, 15,
+            94, 190, 191,
+            67, 165, 68,
+            42, 138, 139,
+            15, 113, 16,
+            95, 191, 192,
+            68, 166, 69,
+            43, 139, 140,
+            17, 113, 114,
+            96, 192, 193,
+            69, 167, 70,
+            44, 140, 141,
+            18, 114, 115,
+            96, 97, 0,
+            70, 168, 71,
+            45, 141, 142,
+            19, 115, 116,
+            71, 169, 72,
+            46, 142, 143,
+            20, 116, 117,
+            72, 170, 73,
+            47, 143, 144,
+            21, 117, 118,
+            73, 171, 74,
+            47, 145, 48,
+            22, 118, 119,
+            74, 172, 75,
+            48, 146, 49,
+            22, 120, 23,
+            75, 173, 76,
+            49, 147, 50,
+            23, 121, 24,
+            77, 173, 174,
+            50, 148, 51,
+            24, 122, 25,
+            78, 174, 175,
+            51, 149, 52,
+            25, 123, 26,
+            79, 175, 176,
+            52, 150, 53,
+            26, 124, 27,
+            0, 98, 1,
+            79, 177, 80,
+            53, 151, 54,
+            27, 125, 28,
+            1, 99, 2,
+            80, 178, 81,
+            54, 152, 55,
+            28, 126, 29,
+            2, 100, 3,
+            81, 179, 82,
+            55, 153, 56,
+            30, 126, 127,
+            3, 101, 4,
+            83, 179, 180,
+            56, 154, 57,
+            31, 127, 128,
+            4, 102, 5,
+            84, 180, 181,
+            58, 154, 155,
+            31, 129, 32,
+            5, 103, 6,
+            85, 181, 182,
+            59, 155, 156,
+            32, 130, 33,
+            6, 104, 7,
+            86, 182, 183,
+            60, 156, 157,
+            34, 130, 131,
+            7, 105, 8,
+            87, 183, 184,
+            61, 157, 158,
+            35, 131, 132,
+            8, 106, 9,
+            88, 184, 185,
+            62, 61, 158,
+            109, 108, 107,
+            109, 107, 110,
+            107, 106, 111,
+            111, 110, 107,
+            113, 112, 106,
+            112, 111, 106,
+            115, 114, 104,
+            114, 113, 105,
+            114, 105, 104,
+            105, 113, 106,
+            116, 115, 103,
+            115, 104, 103,
+            117, 116, 102,
+            116, 103, 102,
+            118, 117, 188,
+            188, 117, 102,
+            119, 118, 187,
+            101, 100, 192,
+            100, 99, 192,
+            99, 98, 192,
+            98, 97, 193,
+            192, 98, 193,
+            192, 191, 101,
+            191, 190, 189,
+            101, 191, 189,
+            102, 101, 188,
+            101, 189, 188,
+            188, 187, 118,
+            187, 186, 119,
+            132, 131, 137,
+            131, 130, 173,
+            137, 131, 138,
+            134, 133, 136,
+            133, 132, 136,
+            136, 135, 134,
+            137, 136, 132,
+            138, 131, 173,
+            130, 129, 174,
+            173, 130, 174,
+            186, 185, 120,
+            119, 186, 120,
+            185, 184, 121,
+            184, 183, 122,
+            121, 184, 122,
+            183, 182, 123,
+            182, 181, 124,
+            123, 182, 124,
+            181, 180, 125,
+            180, 179, 125,
+            181, 125, 124,
+            179, 178, 125,
+            178, 177, 126,
+            125, 178, 126,
+            177, 176, 126,
+            176, 175, 127,
+            127, 175, 128,
+            175, 174, 129,
+            173, 172, 139,
+            172, 171, 139,
+            171, 170, 140,
+            170, 169, 140,
+            169, 168, 141,
+            168, 167, 141,
+            167, 166, 142,
+            166, 165, 143,
+            142, 166, 143,
+            165, 164, 144,
+            164, 163, 145,
+            163, 162, 146,
+            162, 161, 147,
+            146, 162, 147,
+            161, 160, 148,
+            160, 159, 149,
+            159, 158, 150,
+            158, 157, 150,
+            159, 150, 149,
+            157, 156, 155,
+            155, 154, 157,
+            154, 153, 157,
+            153, 152, 151,
+            153, 151, 157,
+            151, 150, 157,
+            160, 149, 148,
+            164, 145, 144,
+            145, 163, 146,
+            141, 167, 142,
+            128, 175, 129,
+            171, 140, 139,
+            121, 120, 185,
+            161, 148, 147,
+            122, 183, 123,
+            165, 144, 143,
+            169, 141, 140,
+            127, 126, 176,
+            36, 35, 132,
+            9, 106, 107,
+            89, 88, 185,
+            63, 62, 159,
+            36, 133, 134,
+            10, 107, 108,
+            90, 89, 186,
+            64, 63, 160,
+            37, 134, 135,
+            12, 11, 108,
+            90, 187, 188,
+            65, 64, 161,
+            38, 135, 136,
+            13, 12, 109,
+            92, 91, 188,
+            66, 65, 162,
+            39, 136, 137,
+            14, 13, 110,
+            93, 92, 189,
+            67, 66, 163,
+            41, 40, 137,
+            14, 111, 112,
+            94, 93, 190,
+            67, 164, 165,
+            42, 41, 138,
+            15, 112, 113,
+            95, 94, 191,
+            68, 165, 166,
+            43, 42, 139,
+            17, 16, 113,
+            96, 95, 192,
+            69, 166, 167,
+            44, 43, 140,
+            18, 17, 114,
+            96, 193, 97,
+            70, 167, 168,
+            45, 44, 141,
+            19, 18, 115,
+            71, 168, 169,
+            46, 45, 142,
+            20, 19, 116,
+            72, 169, 170,
+            47, 46, 143,
+            21, 20, 117,
+            73, 170, 171,
+            47, 144, 145,
+            22, 21, 118,
+            74, 171, 172,
+            48, 145, 146,
+            22, 119, 120,
+            75, 172, 173,
+            49, 146, 147,
+            23, 120, 121,
+            77, 76, 173,
+            50, 147, 148,
+            24, 121, 122,
+            78, 77, 174,
+            51, 148, 149,
+            25, 122, 123,
+            79, 78, 175,
+            52, 149, 150,
+            26, 123, 124,
+            0, 97, 98,
+            79, 176, 177,
+            53, 150, 151,
+            27, 124, 125,
+            1, 98, 99,
+            80, 177, 178,
+            54, 151, 152,
+            28, 125, 126,
+            2, 99, 100,
+            81, 178, 179,
+            55, 152, 153,
+            30, 29, 126,
+            3, 100, 101,
+            83, 82, 179,
+            56, 153, 154,
+            31, 30, 127,
+            4, 101, 102,
+            84, 83, 180,
+            58, 57, 154,
+            31, 128, 129,
+            5, 102, 103,
+            85, 84, 181,
+            59, 58, 155,
+            32, 129, 130,
+            6, 103, 104,
+            86, 85, 182,
+            60, 59, 156,
+            34, 33, 130,
+            7, 104, 105,
+            87, 86, 183,
+            61, 60, 157,
+            35, 34, 131,
+            8, 105, 106,
+            88, 87, 184,
+    };
+
     float vertices_delta[] = {
             0.242878, 0.635607, -0.3,
             0.218850, 0.638852, -0.3,
@@ -3792,32 +4542,31 @@ int main() {
     };
 
 
-
-
-float vertices_G[SYMBOL_2D_POINT_COUNT * 3 * 2];
-unsigned int indices_G[SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2)];
-get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2D_TRIANGLE_COUNT * 3 *2 + (SYMBOL_2D_POINT_COUNT * 3 * 2), 0.1f);
-float color_G[SYMBOL_2D_POINT_COUNT * 3 * 2 * 3];
-genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
+    float vertices_G[SYMBOL_2D_POINT_COUNT * 3 * 2];
+    unsigned int indices_G[SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2)];
+    get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G,
+                      SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2), 0.1f);
+    float color_G[SYMBOL_2D_POINT_COUNT * 3 * 2 * 3];
+    genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
 
 
 //------------------------------------------------------------
     unsigned int VAO[NUMBER_LETTERS];
     glGenVertexArrays(NUMBER_LETTERS, VAO);
 
-	unsigned int VBO[NUMBER_LETTERS];
+    unsigned int VBO[NUMBER_LETTERS];
     glGenBuffers(NUMBER_LETTERS, VBO);
 
-	unsigned int EBO[NUMBER_LETTERS];
+    unsigned int EBO[NUMBER_LETTERS];
     glGenBuffers(NUMBER_LETTERS, EBO);
 
-	unsigned int EBOindices[NUMBER_LETTERS];
+    unsigned int EBOindices[NUMBER_LETTERS];
     glGenBuffers(NUMBER_LETTERS, EBOindices);
-	
+
 
 
     // uncomment this call to draw in wireframe polygons.
-   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 //-------------------------------LETTER BETA-----------------------------
 
@@ -3831,48 +4580,36 @@ genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
     glBufferData(GL_ARRAY_BUFFER, sizeof(color_beta), color_beta, GL_STATIC_DRAW);
 
 //    Element buffer OBJECT
-  
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[0]);
-  	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_beta), indices_beta, GL_STATIC_DRAW);
 
-	// 1rst attribute buffer : vertices
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
-	glVertexAttribPointer(
-		0,            // attribute. No particular reason for 0, but
-		              // must match the layout in the shader.
-		3,            // size
-		GL_FLOAT,     // type
-		GL_FALSE,     // normalized?
-		0,            // stride
-		(void*)0      // array buffer offset
-	);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[0]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_beta), indices_beta, GL_STATIC_DRAW);
 
-	// 2nd attribute buffer : color
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, EBO[0]);
-	glVertexAttribPointer(
-		1,            // attribute. No particular reason for 1, but
-		              // must match the layout in the shader.
-		3,            // size
-		GL_FLOAT,     // type
-		GL_FALSE,     // normalized?
-		0,            // stride
-		(void*)0      // array buffer offset
-	);
+    // 1rst attribute buffer : vertices
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+    glVertexAttribPointer(
+            0,            // attribute. No particular reason for 0, but
+            // must match the layout in the shader.
+            3,            // size
+            GL_FLOAT,     // type
+            GL_FALSE,     // normalized?
+            0,            // stride
+            (void *) 0      // array buffer offset
+    );
 
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[0]);
-	// glVertexAttribPointer(
-	// 	2,            // attribute. No particular reason for 1, but
-	// 	              // must match the layout in the shader.
-	// 	3,            // size
-	// 	GL_FLOAT,     // type
-	// 	GL_FALSE,     // normalized?
-	// 	0,            // stride
-	// 	(void*)0      // array buffer offset
-	// );
+    // 2nd attribute buffer : color
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, EBO[0]);
+    glVertexAttribPointer(
+            1,            // attribute. No particular reason for 1, but
+            // must match the layout in the shader.
+            3,            // size
+            GL_FLOAT,     // type
+            GL_FALSE,     // normalized?
+            0,            // stride
+            (void *) 0      // array buffer offset
+    );
 
 //------------------------------LETTER G------------------------------
 
@@ -3886,61 +4623,15 @@ genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
     glBufferData(GL_ARRAY_BUFFER, sizeof(color_G), color_G, GL_STATIC_DRAW);
 
 //    Element buffer OBJECT
-  
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[1]);
-  	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_G), indices_G, GL_STATIC_DRAW);
 
 
-		// 1rst attribute buffer : vertices
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
-	glVertexAttribPointer(
-		0,            // attribute. No particular reason for 0, but
-		              // must match the layout in the shader.
-		3,            // size
-		GL_FLOAT,     // type
-		GL_FALSE,     // normalized?
-		0,            // stride
-		(void*)0      // array buffer offset
-	);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[1]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_G), indices_G, GL_STATIC_DRAW);
 
-	// 2nd attribute buffer : color
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, EBO[1]);
-	glVertexAttribPointer(
-		1,            // attribute. No particular reason for 1, but
-		              // must match the layout in the shader.
-		3,            // size
-		GL_FLOAT,     // type
-		GL_FALSE,     // normalized?
-		0,            // stride
-		(void*)0      // array buffer offset
-	);
-
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[1]);
-
-    //-------------------------------LETTER DELTA-----------------------------
-
-    glBindVertexArray(VAO[3]);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_delta), vertices_delta, GL_STATIC_DRAW);
-
-//    Element buffer OBJECT
-
-    glBindBuffer(GL_ARRAY_BUFFER, EBO[3]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors_delta), colors_delta, GL_STATIC_DRAW);
-
-//    Element buffer OBJECT
-
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[3]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_delta), indices_delta, GL_STATIC_DRAW);
 
     // 1rst attribute buffer : vertices
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
     glVertexAttribPointer(
             0,            // attribute. No particular reason for 0, but
             // must match the layout in the shader.
@@ -3953,7 +4644,7 @@ genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
 
     // 2nd attribute buffer : color
     glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, EBO[3]);
+    glBindBuffer(GL_ARRAY_BUFFER, EBO[1]);
     glVertexAttribPointer(
             1,            // attribute. No particular reason for 1, but
             // must match the layout in the shader.
@@ -3964,169 +4655,284 @@ genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
             (void *) 0      // array buffer offset
     );
 
-    glEnableVertexAttribArray(2);
+
+    //-------------------------------LETTER B-----------------------------
+
+    glBindVertexArray(VAO[2]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_B), vertices_B, GL_STATIC_DRAW);
+
+//    Element buffer OBJECT
+
+    glBindBuffer(GL_ARRAY_BUFFER, EBO[2]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(color_B), color_B, GL_STATIC_DRAW);
+
+//    Element buffer OBJECT
+
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[2]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_B), indices_B, GL_STATIC_DRAW);
+
+    // 1rst attribute buffer : vertices
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+    glVertexAttribPointer(
+            0,            // attribute. No particular reason for 0, but
+            // must match the layout in the shader.
+            3,            // size
+            GL_FLOAT,     // type
+            GL_FALSE,     // normalized?
+            0,            // stride
+            (void *) nullptr      // array buffer offset
+    );
+
+    // 2nd attribute buffer : color
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, EBO[2]);
+    glVertexAttribPointer(
+            1,            // attribute. No particular reason for 1, but
+            // must match the layout in the shader.
+            3,            // size
+            GL_FLOAT,     // type
+            GL_FALSE,     // normalized?
+            0,            // stride
+            (void *) nullptr      // array buffer offset
+    );
+
+
+
+
+    //-------------------------------LETTER DELTA-----------------------------
+
+    //VERTICES BUFFER
+    glBindVertexArray(VAO[3]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_delta), vertices_delta, GL_STATIC_DRAW);
+
+
+    //COLOR BUFFER
+    glBindBuffer(GL_ARRAY_BUFFER, EBO[3]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colors_delta), colors_delta, GL_STATIC_DRAW);
+
+
+    //INDICES BUFFER
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[3]);
-    // glVertexAttribPointer(
-    // 	2,            // attribute. No particular reason for 1, but
-    // 	              // must match the layout in the shader.
-    // 	3,            // size
-    // 	GL_FLOAT,     // type
-    // 	GL_FALSE,     // normalized?
-    // 	0,            // stride
-    // 	(void*)0      // array buffer offset
-    // );
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_delta), indices_delta, GL_STATIC_DRAW);
+
+    //1st LAYOUT > POSITION
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+    glVertexAttribPointer(
+            0,            // attribute. No particular reason for 0, but
+            // must match the layout in the shader.
+            3,            // size
+            GL_FLOAT,     // type
+            GL_FALSE,     // normalized?
+            0,            // stride
+            (void *) nullptr      // array buffer offset
+    );
+
+    //2st LAYOUT > COLOR
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, EBO[3]);
+    glVertexAttribPointer(
+            1,            // attribute. No particular reason for 1, but
+            // must match the layout in the shader.
+            3,            // size
+            GL_FLOAT,     // type
+            GL_FALSE,     // normalized?
+            0,            // stride
+            (void *) nullptr      // array buffer offset
+    );
 
 
+//---------------------------------SHADER--------------------------------------
 
-//-----------------------------------------------------------------------
+
+//------------------------------------------------------------
+// Input vertex data, different for all executions of this shader.
+// Output data color, will be interpolated for each fragment.
+    const char *vertexShaderSource = "#version 330 core\n"
+                                     "layout (location = 0) in vec3 aPos;\n"
+                                     "layout (location = 1) in vec3 vertexColor;\n"
+                                     "out vec3 fragmentColor;\n"
+                                     "uniform mat4 MVP;\n"
+                                     "void main()\n"
+                                     "{\n"
+                                     " gl_Position = MVP * vec4(aPos, 1.0);\n"
+                                     " fragmentColor = vertexColor;\n"
+                                     "}\0";
+
+
+// declare and define fshader, position in color vector declaration
+// are RGBA from [0,1] simply in and out
+    const char *fragmentShaderSource = "#version 330 core\n"
+                                       "in vec3 fragmentColor;\n"
+                                       "out vec4 FragColor;\n"
+                                       "uniform vec4 newColor;\n"
+                                       "void main()\n"
+                                       "{\n"
+                                       "   if(newColor[0] == -1)\n"
+                                       "   	{FragColor = vec4(fragmentColor, 1.0f);}\n"
+                                       "	else\n"
+                                       "   	{FragColor = newColor;}\n"
+                                       "}\n\0";
 
 
 // build and compile our shader program
-      // ------------------------------------
-      // vertex shader
-      unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-      glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-      glCompileShader(vertexShader);
-      // check for vertex shader compile errors
-      int success;
-      char infoLog[512];
-      glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-      if (!success)
-      {
-          glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-          std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-      }
-      // fragment shader
-      unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-      glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-      glCompileShader(fragmentShader);
-      // check for fragment shader compile errors
-      glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-      if (!success)
-      {
-          glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-          std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-      }
+    // ------------------------------------
+    // vertex shader
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    // check for vertex shader compile errors
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+    // fragment shader
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    // check for fragment shader compile errors
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
 
-      // link shaders : puts together the vertex and the fragment shaders
-      // into a "shader program object"
-      unsigned int shaderProgram = glCreateProgram();
-      glAttachShader(shaderProgram, vertexShader);
-      glAttachShader(shaderProgram, fragmentShader);
-      glLinkProgram(shaderProgram);
-      // check for shader linking errors
-      glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-      if (!success) {
-          glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-          std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-      }
-      
-      // delete shaders, we don't need them anymore
-      glDeleteShader(vertexShader);
-      glDeleteShader(fragmentShader);
+    // link shaders : puts together the vertex and the fragment shaders
+    // into a "shader program object"
+    unsigned int shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    // check for shader linking errors
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+
+    // delete shaders, we don't need them anymore
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
 
 
-	  // Model matrix : an identity matrix (model will be at the origin)
+    // Model matrix : an identity matrix (model will be at the origin)
 
-	MODEL = glm::rotate(MODEL, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
-	
-	PROJECTION = glm::ortho(-5.0f,5.0f,-5.0f,5.0f,0.1f,100.0f); // In world coordinates
-  
-	letterPosition();
-      // Remember, matrix multiplication is the other way around
-      MVP[0] = PROJECTION * VIEW * MODEL * 	TRANSLATION[0]; 
-      
-      MVP[1] = PROJECTION * VIEW * MODEL * TRANSLATION[1];
+    MODEL = glm::rotate(MODEL, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
 
-      MVP[3] = PROJECTION * VIEW * MODEL * TRANSLATION[3];
+    PROJECTION = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.1f, 100.0f); // In world coordinates
 
+    letterPosition();
+    // Remember, matrix multiplication is the other way around
+    MVP[0] = PROJECTION * VIEW * MODEL * TRANSLATION[0];
 
-  // render loop
-  // -----------
-  while (!glfwWindowShouldClose(window))
-  {
-    //input
-    //.....
-    processInput(window);
-	selectLetter(window);
+    MVP[1] = PROJECTION * VIEW * MODEL * TRANSLATION[1];
+
+    MVP[2] = PROJECTION * VIEW * MODEL * TRANSLATION[2];
+
+    MVP[3] = PROJECTION * VIEW * MODEL * TRANSLATION[3];
 
 
+    // render loop
+    // -----------
+    while (!glfwWindowShouldClose(window)) {
+        //input
+        //.....
+        processInput(window);
+        selectLetter(window);
 
-    // render
-    // ------
 
-     // Dark blue background
-    glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glUseProgram(shaderProgram);
+
+        // render
+        // ------
+
+        // Dark blue background
+        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glUseProgram(shaderProgram);
 
 
 
 // Get a handle for our "MVP" uniform
-    unsigned int MatrixID = glGetUniformLocation(shaderProgram, "MVP");
-    int vertexColorLocation = glGetUniformLocation(shaderProgram, "newColor");
+        unsigned int MatrixID = glGetUniformLocation(shaderProgram, "MVP");
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "newColor");
 
 
 
 
-   // Send our transformation to the currently bound shader, 
-      // in the "MVP" uniform
-  
+        // Send our transformation to the currently bound shader,
+        // in the "MVP" uniform
 
-    //------------------------------------------------------------
+
+        //------------------------------------------------------------
 
 
         // Enable depth test
-          glEnable(GL_DEPTH_TEST);  
-          // Accept fragment if it closer to the camera than the former one
-          glDepthFunc(GL_LESS); 
+        glEnable(GL_DEPTH_TEST);
+        // Accept fragment if it closer to the camera than the former one
+        glDepthFunc(GL_LESS);
 
-          // also clear the depth buffer now!
-         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-          
-
+        // also clear the depth buffer now!
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	glBindVertexArray(VAO[0]);
-	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0][0]);
-    glUniform4f(vertexColorLocation, selected_colors[0][0], selected_colors[0][1],  selected_colors[0][2],  selected_colors[0][3] );
-    glDrawElements(GL_TRIANGLES, sizeof(indices_beta) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(VAO[0]);
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0][0]);
+        glUniform4f(vertexColorLocation, selected_colors[0][0], selected_colors[0][1], selected_colors[0][2],
+                    selected_colors[0][3]);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_beta) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 
-	glBindVertexArray(VAO[1]);
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[1][0][0]);
-	glUniform4f(vertexColorLocation, selected_colors[1][0], selected_colors[1][1],  selected_colors[1][2],  selected_colors[1][3] );
-    glDrawElements(GL_TRIANGLES, sizeof(indices_G) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(VAO[1]);
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[1][0][0]);
+        glUniform4f(vertexColorLocation, selected_colors[1][0], selected_colors[1][1], selected_colors[1][2],
+                    selected_colors[1][3]);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_G) / sizeof(float), GL_UNSIGNED_INT, 0);
 
-    glBindVertexArray(VAO[3]);
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[3][0][0]);
-    glUniform4f(vertexColorLocation, selected_colors[3][0], selected_colors[3][1],  selected_colors[3][2],  selected_colors[3][3] );
-    glDrawElements(GL_TRIANGLES, sizeof(indices_delta) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(VAO[2]);
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[2][0][0]);
+        glUniform4f(vertexColorLocation, selected_colors[2][0], selected_colors[2][1], selected_colors[2][2],
+                    selected_colors[2][3]);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_B) / sizeof(float), GL_UNSIGNED_INT, 0);
 
-	
-
-    /* glfw: swap buffers and poll IO events (keys pressed/released, 
-	 mouse moved etc.)
-	 --------------------------------------------------------------*/
-    //cria janela e processa tudo o que nela se passa
-    glfwSwapBuffers(window);
-
-    glfwPollEvents();
-  }
-
-  // optional: de-allocate all resources once they've outlived their purpose:
-  // ------------------------------------------------------------------------
-  glDeleteVertexArrays(1, &VAO[0]);
-  glDeleteBuffers(1, &VBO[0]);
-  glDeleteBuffers(1, &EBO[0]);
-  glDeleteBuffers(1, &EBOindices[0]);
+        glBindVertexArray(VAO[3]);
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[3][0][0]);
+        glUniform4f(vertexColorLocation, selected_colors[3][0], selected_colors[3][1], selected_colors[3][2],
+                    selected_colors[3][3]);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_delta) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 
-  glDeleteProgram(shaderProgram);
 
-  // glfw: terminate, clearing all previously allocated GLFW resources.
-  // ------------------------------------------------------------------
-  glfwTerminate();
-  return 0;
+        /* glfw: swap buffers and poll IO events (keys pressed/released,
+         mouse moved etc.)
+         --------------------------------------------------------------*/
+        //cria janela e processa tudo o que nela se passa
+        glfwSwapBuffers(window);
+
+        glfwPollEvents();
+    }
+
+    // optional: de-allocate all resources once they've outlived their purpose:
+    // ------------------------------------------------------------------------
+
+    for (int r = 0; r < NUMBER_LETTERS; ++r) {
+        glDeleteVertexArrays(1, &VAO[r]);
+        glDeleteBuffers(1, &VBO[r]);
+        glDeleteBuffers(1, &EBO[r]);
+        glDeleteBuffers(1, &EBOindices[r]);
+    }
+
+    glDeleteProgram(shaderProgram);
+
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
+    glfwTerminate();
+    return 0;
 }
