@@ -1,6 +1,6 @@
-add_executable(tp3_ex2 main.cpp)
+add_executable(pl4 main.cpp)
 
-target_link_libraries(tp3_ex2
+target_link_libraries(pl4
     LINK_PUBLIC
         glfw
         glad

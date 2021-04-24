@@ -1,5 +1,5 @@
 //1. make
-//2. ./tp3_ex2/tp3_ex2
+//2. ./pl4/pl4
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
