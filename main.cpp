@@ -645,6 +645,7 @@ void genColors(float* colors, int colors_count)
 	
 }
 
+
 //============================================
 /* process all input: query GLFW whether relevant keys are pressed/released 
 this frame and react accordingly 
@@ -682,6 +683,36 @@ void letterPosition(){
 	TRANSLATION[3] = glm::translate(glm::mat4(), glm::vec3(2.0f, 0.0f, 0.0f));
 	TRANSLATION[4] = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f));
 }
+
+// color[0] = fragmentcolor;
+// select color[0] = preto;
+
+glm::vec4 selected_colors[] = {
+	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
+	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
+	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
+	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f),
+	glm::vec4(-1.0f,-1.0f, -1.0f, 1.0f)
+};
+
+void selectLetterV2(int letter){
+
+	glm::vec4 selected_color = glm::vec4(1,1,1,1);
+	selected_colors[letter] = selected_color;
+	for(int i = 0 ; i< NUMBER_LETTERS; i++){
+		if(i !=letter)
+		{
+			selected_colors[i] = glm::vec4(-1.0f,-1.0f, -1.0f , 1.0f);
+		}
+	}
+
+}
+
+void selectLetter(GLFWwindow *window){
+	if(glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
+		selectLetterV2(0);
+	}
+}
 /* glfw: whenever the window size changed (by OS or user resize) this
    callback function executes
    -------------------------------------------------------------------*/
@@ -715,13 +746,15 @@ const char *vertexShaderSource = "#version 330 core\n"
 // are RGBA from [0,1] simply in and out
 const char *fragmentShaderSource = "#version 330 core\n"
     "in vec3 fragmentColor;\n"
-    "out vec3 FragColor;\n"
+    "out vec4 FragColor;\n"
+	"uniform vec4 newColor;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = fragmentColor;\n"
+		"	if(newColor[0] == -1)\n" 
+	    "   	{FragColor = vec4(fragmentColor, 1.0f);}\n"	
+		"	else\n"
+	    "   	{FragColor = newColor;}\n"
     "}\n\0";
-
-
 
 
 
@@ -737,7 +770,7 @@ int main()
 
   // glfw window creation
   // --------------------
-  GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Letra 3D", NULL,
+  GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sopa de Letras", NULL,
                                         NULL);
 
   if (window == NULL)
@@ -756,7 +789,7 @@ int main()
     std::cout << "Failed to initialize GLAD" << std::endl;
     return -1;
   }
-
+std::cout << glGetString(GL_VERSION) << std::endl;
 
 //------------------------------------------------------------
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -2513,6 +2546,7 @@ genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
     //input
     //.....
     processInput(window);
+	selectLetter(window);
 
 
 
@@ -2527,7 +2561,8 @@ genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
 
 
 // Get a handle for our "MVP" uniform
-      unsigned int MatrixID = glGetUniformLocation(shaderProgram, "MVP");
+    unsigned int MatrixID = glGetUniformLocation(shaderProgram, "MVP");
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "newColor");
 
 
 
@@ -2547,19 +2582,17 @@ genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
           // also clear the depth buffer now!
          glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
           
-       
-        // seeing as we only have a single VAO there's no need to bind
-        // it every time, but we'll do so to keep things a bit more organized
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
-        // glBindVertexArray(0); // no need to unbind it every time 
+
+
 
 	glBindVertexArray(VAO[0]);
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0][0]);
-
+    glUniform4f(vertexColorLocation, selected_colors[0][0], selected_colors[0][1],  selected_colors[0][2],  selected_colors[0][3] );
     glDrawElements(GL_TRIANGLES, sizeof(indices_beta) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(VAO[1]);
     glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[1][0][0]);
+	glUniform4f(vertexColorLocation, selected_colors[1][0], selected_colors[1][1],  selected_colors[1][2],  selected_colors[1][3] );
     glDrawElements(GL_TRIANGLES, sizeof(indices_G) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 
