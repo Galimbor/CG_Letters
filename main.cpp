@@ -1,11 +1,6 @@
-//1. make
-//2. ./pl4/pl4
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -16,7 +11,7 @@
 
 unsigned int SELECTED_LETTERID = -1;
 
-const unsigned int SIMBOL_WIDTH = 501;
+const unsigned int SIMBOL_WIDTH = 401;
 const unsigned int SIMBOL_HEIGHT = 445;
 
 // screen settings
@@ -49,15 +44,99 @@ glm::mat4 TRANSLATION[NUMBER_LETTERS];
 
 glm::mat4 MVP[NUMBER_LETTERS];
 
+
+void genColors(float *colors, int colors_count) {
+    srand(5674389);
+    for (int i = 0; i < colors_count; i++) {
+        colors[i] = ((float) rand()) / (float) RAND_MAX;
+    }
+
+}
+
+//============================================
+/* process all input: query GLFW whether relevant keys are pressed/released 
+this frame and react accordingly 
+-----------------------------------------------------------------------*/
+// Funcao que deteta o Enter
+void processInput(GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        cameraPos = glm::vec3(-1.0f, 0.0f, 0.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        cameraPos = glm::vec3(1.0f, 0.0f, 0.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, 100.0f, 1.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, -50.0f, 1.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
+    } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
+
+    }
+}
+
+void letterPosition() {
+    TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.0f, 0.0f));
+    TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+    TRANSLATION[2] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
+}
+
+// color[0] = fragmentcolor;
+// select color[0] = preto;
+
+glm::vec4 selected_colors[] = {
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f)
+};
+
+void selectLetterV2(int letter) {
+
+    glm::vec4 selected_color = glm::vec4(1, 1, 1, 1);
+    selected_colors[letter] = selected_color;
+    for (int i = 0; i < NUMBER_LETTERS; i++) {
+        if (i != letter) {
+            selected_colors[i] = glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f);
+        }
+    }
+}
+
+void selectLetter(GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
+        selectLetterV2(0);
+        SELECTED_LETTERID = 0;
+    } else if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
+        selectLetterV2(1);
+        SELECTED_LETTERID = 1;
+    } else if (glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS) {
+        selectLetterV2(2);
+        SELECTED_LETTERID = 2;
+    } else if (glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS) {
+        selectLetterV2(3);
+        SELECTED_LETTERID = 3;
+    } else if (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS) {
+        selectLetterV2(4);
+        SELECTED_LETTERID = 4;
+    }
+}
+
 // FOR LETTER Beyblades
+
 float normalize_x(float x) {
-    x /= (SIMBOL_WIDTH / 2);
+    x /= (SCR_WIDTH / 2); //TODO mudei para a escala da janela para ficar do tamanho das outras letras
     x -= 1;
     return x;
 }
 
+
 float normalize_y(float y) {
-    y /= (SIMBOL_HEIGHT / 2);
+    y /= (SCR_HEIGHT / 2); //TODO mudei para a escala da janela para ficar do tamanho das outras letras
     y -= 1;
     return -y;
 }
@@ -617,93 +696,9 @@ void get_symbol_points(float *vertices, int vertices_size, unsigned int *indices
 
         current_point = next_point;
     }
-
-
 }
 
-void genColors(float *colors, int colors_count) {
-    srand(5674389);
-    for (int i = 0; i < colors_count; i++) {
-        colors[i] = ((float) rand()) / (float) RAND_MAX;
-    }
 
-}
-
-//============================================
-/* process all input: query GLFW whether relevant keys are pressed/released 
-this frame and react accordingly 
------------------------------------------------------------------------*/
-// Funcao que deteta o Enter
-void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        cameraPos = glm::vec3(-1.0f, 0.0f, 0.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        cameraPos = glm::vec3(1.0f, 0.0f, 0.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, 100.0f, 1.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, -50.0f, 1.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
-    } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
-
-    }
-}
-
-void letterPosition() {
-    TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 0.0f, 0.0f));
-    TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.0f, 0.0f));
-    TRANSLATION[2] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
-    TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
-}
-
-// color[0] = fragmentcolor;
-// select color[0] = preto;
-
-glm::vec4 selected_colors[] = {
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f)
-};
-
-void selectLetterV2(int letter) {
-
-    glm::vec4 selected_color = glm::vec4(1, 1, 1, 1);
-    selected_colors[letter] = selected_color;
-    for (int i = 0; i < NUMBER_LETTERS; i++) {
-        if (i != letter) {
-            selected_colors[i] = glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f);
-        }
-    }
-
-}
-
-void selectLetter(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
-        selectLetterV2(0);
-        SELECTED_LETTERID = 0;
-    } else if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
-        selectLetterV2(1);
-        SELECTED_LETTERID = 1;
-    } else if (glfwGetKey(window, GLFW_KEY_F3) == GLFW_PRESS) {
-        selectLetterV2(2);
-        SELECTED_LETTERID = 2;
-    } else if (glfwGetKey(window, GLFW_KEY_F4) == GLFW_PRESS) {
-        selectLetterV2(3);
-        SELECTED_LETTERID = 3;
-    } else if (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS) {
-        selectLetterV2(4);
-        SELECTED_LETTERID = 4;
-    }
-
-
-}
 /* glfw: whenever the window size changed (by OS or user resize) this
    callback function executes
    -------------------------------------------------------------------*/
@@ -731,11 +726,11 @@ int main() {
 
     // glfw window creation
     // --------------------
-    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sopa de Letras", NULL,
-                                          NULL);
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sopa de Letras", nullptr,
+                                          nullptr);
 
 
-    if (window == NULL) {
+    if (window == nullptr) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
@@ -761,6 +756,9 @@ int main() {
     // makes 6*2=12 triangles, and 12*3 vertices
     // ------------------------------------------------------------------
 
+
+
+    /// ARRAYS -----------------------LETTER BETA-------------------------------------/
 
     // One color for each vertex. They were generated randomly.
     static const float color_beta[] =
@@ -2526,6 +2524,19 @@ int main() {
     };
 
 
+
+    //--------------------------- LETTER G--------------------------------------
+
+    float vertices_G[SYMBOL_2D_POINT_COUNT * 3 * 2];
+    unsigned int indices_G[SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2)];
+    get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G,
+                      SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2), 0.1f);
+    float color_G[SYMBOL_2D_POINT_COUNT * 3 * 2 * 3];
+    genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
+
+
+    /// ARRAYS -----------------------LETTER B-------------------------------------/
+
     static const float vertices_B[] = {
             -0.29f, 0.345f, -0.04f,
             -0.275f, 0.34f, -0.04f,
@@ -3306,6 +3317,8 @@ int main() {
             8, 105, 106,
             88, 87, 184,
     };
+
+    //ARRAYS----------------------------LETTER DELTA-------------------------
 
     float vertices_delta[] = {
             0.242878, 0.635607, -0.3,
@@ -4541,9 +4554,9 @@ int main() {
 
     };
 
-    //Info letra Y
+    //ARRAYS--------------------------LETTER GAMMA---------------------------------
 
-    static const float vertices_y[] = {
+    static const float vertices_gamma[] = {
             -0.051164, -0.408419, 0.000000,
             -0.029427, -0.419859, 0.000000,
             0.048367, -0.376386, 0.000000,
@@ -4611,7 +4624,7 @@ int main() {
     };
 
 
-    static const float colors_y[] = {
+    static const float colors_gamma[] = {
             0.583f, 0.771f, 0.014f,
             0.609f, 0.115f, 0.436f,
             0.327f, 0.483f, 0.844f,
@@ -4679,8 +4692,7 @@ int main() {
     };
 
 
-    //Index array for each triangle
-    unsigned int indices_y[] = {
+    unsigned int indices_gamma[] = {
             11, 12, 6,
             25, 22, 23,
             26, 21, 22,
@@ -4810,12 +4822,6 @@ int main() {
     // END info Y
 
 
-    float vertices_G[SYMBOL_2D_POINT_COUNT * 3 * 2];
-    unsigned int indices_G[SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2)];
-    get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G,
-                      SYMBOL_2D_TRIANGLE_COUNT * 3 * 2 + (SYMBOL_2D_POINT_COUNT * 3 * 2), 0.1f);
-    float color_G[SYMBOL_2D_POINT_COUNT * 3 * 2 * 3];
-    genColors(color_G, SYMBOL_2D_POINT_COUNT * 3 * 2 * 3);
 
 
 //------------------------------------------------------------
@@ -4828,32 +4834,27 @@ int main() {
     unsigned int EBO[NUMBER_LETTERS];
     glGenBuffers(NUMBER_LETTERS, EBO);
 
-    unsigned int EBOindices[NUMBER_LETTERS];
-    glGenBuffers(NUMBER_LETTERS, EBOindices);
+    unsigned int IBO[NUMBER_LETTERS];
+    glGenBuffers(NUMBER_LETTERS, IBO);
 
 
-
-    // uncomment this call to draw in wireframe polygons.
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 //-------------------------------LETTER BETA-----------------------------
 
+    //VERTICES BUFFER
     glBindVertexArray(VAO[0]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_beta), vertices_beta, GL_STATIC_DRAW);
 
-//    Element buffer OBJECT
-
+    //COLORS BUFFER
     glBindBuffer(GL_ARRAY_BUFFER, EBO[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(color_beta), color_beta, GL_STATIC_DRAW);
 
-//    Element buffer OBJECT
-
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[0]);
+    //INDICES BUFFER
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO[0]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_beta), indices_beta, GL_STATIC_DRAW);
 
-    // 1rst attribute buffer : vertices
+    //1ST LAYOUT > POSITION
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
     glVertexAttribPointer(
@@ -4863,10 +4864,10 @@ int main() {
             GL_FLOAT,     // type
             GL_FALSE,     // normalized?
             0,            // stride
-            (void *) 0      // array buffer offset
+            (void *) nullptr      // array buffer offset
     );
 
-    // 2nd attribute buffer : color
+    //2ND LAYOUT > COLOR
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, EBO[0]);
     glVertexAttribPointer(
@@ -4876,28 +4877,26 @@ int main() {
             GL_FLOAT,     // type
             GL_FALSE,     // normalized?
             0,            // stride
-            (void *) 0      // array buffer offset
+            (void *) nullptr      // array buffer offset
     );
 
 //------------------------------LETTER G------------------------------
 
+    //VERTICES BUFFER
     glBindVertexArray(VAO[1]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_G), vertices_G, GL_STATIC_DRAW);
 
-//    Element buffer OBJECT
-
+    //COLORS BUFFER
     glBindBuffer(GL_ARRAY_BUFFER, EBO[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(color_G), color_G, GL_STATIC_DRAW);
 
-//    Element buffer OBJECT
-
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[1]);
+    //INDICES BUFFER
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_G), indices_G, GL_STATIC_DRAW);
 
 
-    // 1rst attribute buffer : vertices
+    //1ST LAYOUT > POSITION
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
     glVertexAttribPointer(
@@ -4907,10 +4906,10 @@ int main() {
             GL_FLOAT,     // type
             GL_FALSE,     // normalized?
             0,            // stride
-            (void *) 0      // array buffer offset
+            (void *) nullptr      // array buffer offset
     );
 
-    // 2nd attribute buffer : color
+    //2ND LAYOUT > COLOR
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, EBO[1]);
     glVertexAttribPointer(
@@ -4920,28 +4919,26 @@ int main() {
             GL_FLOAT,     // type
             GL_FALSE,     // normalized?
             0,            // stride
-            (void *) 0      // array buffer offset
+            (void *) nullptr      // array buffer offset
     );
 
 
     //-------------------------------LETTER B-----------------------------
 
+    //VERTICES BUFFER
     glBindVertexArray(VAO[2]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_B), vertices_B, GL_STATIC_DRAW);
 
-//    Element buffer OBJECT
-
+    //COLORS BUFFER
     glBindBuffer(GL_ARRAY_BUFFER, EBO[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(color_B), color_B, GL_STATIC_DRAW);
 
-//    Element buffer OBJECT
-
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[2]);
+    //INDICES BUFFER
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO[2]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_B), indices_B, GL_STATIC_DRAW);
 
-    // 1rst attribute buffer : vertices
+    //1ST LAYOUT > POSITION
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
     glVertexAttribPointer(
@@ -4954,7 +4951,7 @@ int main() {
             (void *) nullptr      // array buffer offset
     );
 
-    // 2nd attribute buffer : color
+    //2ND LAYOUT > COLOR
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, EBO[2]);
     glVertexAttribPointer(
@@ -4978,16 +4975,16 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_delta), vertices_delta, GL_STATIC_DRAW);
 
 
-    //COLOR BUFFER
+    //COLORS BUFFER
     glBindBuffer(GL_ARRAY_BUFFER, EBO[3]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors_delta), colors_delta, GL_STATIC_DRAW);
 
 
     //INDICES BUFFER
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[3]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO[3]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_delta), indices_delta, GL_STATIC_DRAW);
 
-    //1st LAYOUT > POSITION
+    //1ST LAYOUT > POSITION
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
     glVertexAttribPointer(
@@ -5000,7 +4997,7 @@ int main() {
             (void *) nullptr      // array buffer offset
     );
 
-    //2st LAYOUT > COLOR
+    //2ND LAYOUT > COLOR
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, EBO[3]);
     glVertexAttribPointer(
@@ -5014,24 +5011,24 @@ int main() {
     );
 
 
-    //-------------------------------LETTER Y-----------------------------
+    //-------------------------------LETTER GAMMA-----------------------------
 
     //VERTICES BUFFER
     glBindVertexArray(VAO[4]);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[4]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_y), vertices_y, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_gamma), vertices_gamma, GL_STATIC_DRAW);
 
 
-    //COLOR BUFFER
+    //COLORS BUFFER
     glBindBuffer(GL_ARRAY_BUFFER, EBO[4]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors_y), colors_y, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colors_gamma), colors_gamma, GL_STATIC_DRAW);
 
 
     //INDICES BUFFER
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOindices[4]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_y), indices_y, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO[4]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_gamma), indices_gamma, GL_STATIC_DRAW);
 
-    //1st LAYOUT > POSITION
+    //1ST LAYOUT > POSITION
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO[4]);
     glVertexAttribPointer(
@@ -5044,7 +5041,7 @@ int main() {
             (void *) nullptr      // array buffer offset
     );
 
-    //2st LAYOUT > COLOR
+    //2ND LAYOUT > COLOR
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, EBO[4]);
     glVertexAttribPointer(
@@ -5095,24 +5092,24 @@ int main() {
     // ------------------------------------
     // vertex shader
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
     glCompileShader(vertexShader);
     // check for vertex shader compile errors
     int success;
     char infoLog[512];
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
     // fragment shader
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
     glCompileShader(fragmentShader);
     // check for fragment shader compile errors
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
@@ -5125,7 +5122,7 @@ int main() {
     // check for shader linking errors
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 
@@ -5160,22 +5157,22 @@ int main() {
         //input
         //.....
         processInput(window);
+
+
         selectLetter(window);
-
-
 
         // render
         // ------
 
         // Dark blue background
-        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+        glClearColor(0.15f, 0.15f, 0.15f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
 
 
 // Get a handle for our "MVP" uniform
-        unsigned int MatrixID = glGetUniformLocation(shaderProgram, "MVP");
+        GLint MatrixID = glGetUniformLocation(shaderProgram, "MVP");
         int vertexColorLocation = glGetUniformLocation(shaderProgram, "newColor");
 
 
@@ -5201,32 +5198,32 @@ int main() {
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0][0]);
         glUniform4f(vertexColorLocation, selected_colors[0][0], selected_colors[0][1], selected_colors[0][2],
                     selected_colors[0][3]);
-        glDrawElements(GL_TRIANGLES, sizeof(indices_beta) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_beta) / sizeof(float), GL_UNSIGNED_INT, nullptr);
 
 
         glBindVertexArray(VAO[1]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[1][0][0]);
         glUniform4f(vertexColorLocation, selected_colors[1][0], selected_colors[1][1], selected_colors[1][2],
                     selected_colors[1][3]);
-        glDrawElements(GL_TRIANGLES, sizeof(indices_G) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_G) / sizeof(float), GL_UNSIGNED_INT, nullptr);
 
         glBindVertexArray(VAO[2]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[2][0][0]);
         glUniform4f(vertexColorLocation, selected_colors[2][0], selected_colors[2][1], selected_colors[2][2],
                     selected_colors[2][3]);
-        glDrawElements(GL_TRIANGLES, sizeof(indices_B) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_B) / sizeof(float), GL_UNSIGNED_INT, nullptr);
 
         glBindVertexArray(VAO[3]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[3][0][0]);
         glUniform4f(vertexColorLocation, selected_colors[3][0], selected_colors[3][1], selected_colors[3][2],
                     selected_colors[3][3]);
-        glDrawElements(GL_TRIANGLES, sizeof(indices_delta) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_delta) / sizeof(float), GL_UNSIGNED_INT, nullptr);
 
         glBindVertexArray(VAO[4]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[4][0][0]);
         glUniform4f(vertexColorLocation, selected_colors[4][0], selected_colors[4][1], selected_colors[4][2],
                     selected_colors[4][3]);
-        glDrawElements(GL_TRIANGLES, sizeof(indices_delta) / sizeof(float), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(indices_delta) / sizeof(float), GL_UNSIGNED_INT, nullptr);
 
 
 
@@ -5246,7 +5243,7 @@ int main() {
         glDeleteVertexArrays(1, &VAO[r]);
         glDeleteBuffers(1, &VBO[r]);
         glDeleteBuffers(1, &EBO[r]);
-        glDeleteBuffers(1, &EBOindices[r]);
+        glDeleteBuffers(1, &IBO[r]);
     }
 
     glDeleteProgram(shaderProgram);
