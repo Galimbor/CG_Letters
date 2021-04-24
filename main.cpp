@@ -29,6 +29,23 @@ glm::vec3 cameraPos = glm::vec3(0.0f,0.0f,0.5f);
 glm::vec3 cameraFront = glm::vec3(0.0f,0.0f,0.0f); // and looks at the origin
 glm::vec3 cameraUp = glm::vec3(0.0f,1.0f,0.0f);  // Head is up (set to 0,-1,0 to look upside-down)
 
+
+// MVP MATRIX GLOBAL VARIABLES
+// Model matrix : an identity matrix (model will be at the origin)
+glm::mat4 Model = glm::mat4(1.0f);
+Model = glm::rotate(Model, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
+	
+// View camera matrix
+glm::mat4 View = glm::lookAt(
+        cameraPos, //in World Space
+        cameraFront, // and looks at the origin
+        cameraUp // Head 
+);
+
+glm::mat4 Projection = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,0.1f,100.0f); // In world coordinates
+
+glm::mat4 MVP ; 
+
 // FOR LETTER Beyblades
 float normalize_x(float x)
 {
@@ -2483,11 +2500,11 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
       unsigned int MatrixID = glGetUniformLocation(shaderProgram, "MVP");
 
 	  // Model matrix : an identity matrix (model will be at the origin)
-      glm::mat4 Model = glm::mat4(1.0f);
+    	Model = glm::mat4(1.0f);
 	  Model = glm::rotate(Model, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
 	
 	  // View camera matrix
-      glm::mat4 View = glm::lookAt(
+     View = glm::lookAt(
                       cameraPos, //in World Space
                       cameraFront, // and looks at the origin
                       cameraUp // Head 
@@ -2498,13 +2515,13 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
       // display range : 0.1 unit <-> 100 units
      // glm::mat4 Projection = glm::perspective(glm::radians(30.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
-	  glm::mat4 Projection = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,0.1f,100.0f); // In world coordinates
+	  Projection = glm::ortho(-1.0f,1.0f,-1.0f,1.0f,0.1f,100.0f); // In world coordinates
 
     
       
 	  // Our ModelViewProjection : multiplication of our 3 matrices
       // Remember, matrix multiplication is the other way around
-      glm::mat4 MVP   = Projection * View * Model; 
+      MVP   = Projection * View * Model; 
       
 
 
