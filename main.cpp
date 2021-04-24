@@ -2510,7 +2510,7 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
 
    // Send our transformation to the currently bound shader, 
       // in the "MVP" uniform
-      
+      glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
     //------------------------------------------------------------
 
@@ -2530,11 +2530,9 @@ get_symbol_points(vertices_G, SYMBOL_2D_POINT_COUNT * 3 * 2, indices_G, SYMBOL_2
         // glBindVertexArray(0); // no need to unbind it every time 
 
 	glBindVertexArray(VAO[0]);
-	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0][0]);
     glDrawElements(GL_TRIANGLES, sizeof(indices_beta) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(VAO[1]);
-	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[1][0][0]);
     glDrawElements(GL_TRIANGLES, sizeof(indices_G) / sizeof(float), GL_UNSIGNED_INT, 0);
 
 
