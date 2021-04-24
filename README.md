@@ -1,9 +1,9 @@
 # Computação Gráfica - PL4 Sopa de Simbolos
-> Ana Rocha, a63971
-> Artur Rodrigues, a64592
-> Ricardo Correria, a64007
-> Jean Morelli, a64014
-> Ruben Cruz, a64591
+> Ana Rocha, a63971 </p>
+> Artur Rodrigues, a64592 </p>
+> Ricardo Correria, a64007 </p>
+> Jean Morelli, a64014 </p>
+> Ruben Cruz, a64591</p>
 
 
 ## Objetivo
