@@ -31,7 +31,7 @@ const glm::mat4 INITIAL_TRANSLATIONS[NUMBER_LETTERS] = {
 
 
 // camera settings
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 5.0f);
+glm::vec3 cameraPos = glm::vec3(-3.0f, 0.0f, 5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f); // and looks at the origin
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);  // Head is up (set to 0,1,0 to look upside-down)
 
@@ -121,10 +121,23 @@ void moveLetter(GLFWwindow *window) {
     glfwGetCursorPos(window, &cursor_x, &cursor_y);
     cursor_x = (cursor_x - SCR_WIDTH / 2) / ((SCR_WIDTH / 2) / 4);
     cursor_y = -(cursor_y - SCR_HEIGHT / 2) / ((SCR_HEIGHT / 2) / 4);
-    printf("Cursor position: %f %f\n", cursor_x, cursor_y);
-    if (SELECTED_LETTERID != -1)
-        TRANSLATION[SELECTED_LETTERID] = glm::translate(glm::mat4(1.0f), glm::vec3(cursor_x, cursor_y, 0.0f));
+//    printf("Cursor position: %f %f\n", cursor_x, cursor_y);
+    if (SELECTED_LETTERID != -1) {
+    TRANSLATION[SELECTED_LETTERID] = glm::translate(glm::mat4(1.0f), glm::vec3(cursor_x, cursor_y,
+                                                                               TRANSLATION[SELECTED_LETTERID][3][2]));
 }
+}
+
+void moveLetterOverZ(GLFWwindow *window, char symbol ) {
+
+    if (SELECTED_LETTERID != -1) {
+        TRANSLATION[SELECTED_LETTERID] = symbol == '+' ?
+                                         glm::translate(TRANSLATION[SELECTED_LETTERID], glm::vec3(0.0f, 0.0f, 0.5f  ))
+                                                       :
+                                         glm::translate(TRANSLATION[SELECTED_LETTERID], glm::vec3(0.0f, 0.0f, -0.5f));
+    }
+}
+
 
 void selectLetter(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
@@ -144,9 +157,17 @@ void selectLetter(GLFWwindow *window) {
         SELECTED_LETTERID = 4;
     } else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         reset_positions();
-    } else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+    }else if(glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS && (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS))
+    {
+        moveLetterOverZ(window, '+');
+    }else if(glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS && (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS))
+    {
+        moveLetterOverZ(window, '-');
+    }
+    else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         moveLetter(window);
     }
+
 }
 
 
@@ -5205,8 +5226,8 @@ void selectLetter(GLFWwindow *window) {
 
         MODEL = glm::rotate(MODEL, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
 
-        PROJECTION = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.001f, 100.0f); // In world coordinates
-
+//        PROJECTION = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.001f, 100.0f); // In world coordinates
+        PROJECTION = glm::perspective(glm::radians(70.0f), 8.0f / 8.0f, 0.001f, 100.0f);
         letterPosition();
         // Remember, matrix multiplication is the other way around
 
@@ -5229,15 +5250,15 @@ void selectLetter(GLFWwindow *window) {
             glClear(GL_COLOR_BUFFER_BIT);
             glUseProgram(shaderProgram);
 
-            MVP[0] = PROJECTION * VIEW * MODEL * TRANSLATION[0];
+            MVP[0] = PROJECTION * TRANSLATION[0] *  VIEW * MODEL ;
 
-            MVP[1] = PROJECTION * VIEW * MODEL * TRANSLATION[1];
+            MVP[1] = PROJECTION * TRANSLATION[1] * VIEW * MODEL ;
 
-            MVP[2] = PROJECTION * VIEW * MODEL * TRANSLATION[2];
+            MVP[2] = PROJECTION * TRANSLATION[2] * VIEW * MODEL ;
 
-            MVP[3] = PROJECTION * VIEW * MODEL * TRANSLATION[3];
+            MVP[3] = PROJECTION * TRANSLATION[3] * VIEW * MODEL ;
 
-            MVP[4] = PROJECTION * VIEW * MODEL * TRANSLATION[4];
+            MVP[4] = PROJECTION * TRANSLATION[4] * VIEW * MODEL ;
 
 
 // Get a handle for our "MVP" uniform
