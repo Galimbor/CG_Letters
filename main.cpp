@@ -31,9 +31,9 @@ const glm::mat4 INITIAL_TRANSLATIONS[NUMBER_LETTERS] = {
 
 
 // camera settings
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 2.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f); // and looks at the origin
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);  // Head is up (set to 0,-1,0 to look upside-down)
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);  // Head is up (set to 0,1,0 to look upside-down)
 
 
 // MVP MATRIX GLOBAL VARIABLES
@@ -121,7 +121,7 @@ void moveLetter(GLFWwindow *window) {
     glfwGetCursorPos(window, &cursor_x, &cursor_y);
     cursor_x = (cursor_x - SCR_WIDTH / 2) / ((SCR_WIDTH / 2) / 4);
     cursor_y = -(cursor_y - SCR_HEIGHT / 2) / ((SCR_HEIGHT / 2) / 4);
-//    printf("Cursor position: %f %f\n", cursor_x, cursor_y);
+    printf("Cursor position: %f %f\n", cursor_x, cursor_y);
     if (SELECTED_LETTERID != -1)
         TRANSLATION[SELECTED_LETTERID] = glm::translate(glm::mat4(1.0f), glm::vec3(cursor_x, cursor_y, 0.0f));
 }
@@ -5205,7 +5205,7 @@ void selectLetter(GLFWwindow *window) {
 
         MODEL = glm::rotate(MODEL, glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
 
-        PROJECTION = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.1f, 100.0f); // In world coordinates
+        PROJECTION = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.001f, 100.0f); // In world coordinates
 
         letterPosition();
         // Remember, matrix multiplication is the other way around
