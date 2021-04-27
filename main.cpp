@@ -32,7 +32,7 @@ const glm::mat4 INITIAL_TRANSLATIONS[NUMBER_LETTERS] = {
 
 
 // camera settings
-glm::vec3 cameraPos = glm::vec3(-3.0f, 0.0f, 5.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f); // and looks at the origin
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);  // Head is up (set to 0,1,0 to look upside-down)
 
@@ -171,7 +171,7 @@ void moveLetterOverY(GLFWwindow *window, char symbol) {
                                                        glm::vec3(0.0, 1.0, 0.0));
                 break;
             case 'L':
-                MODEL[SELECTED_LETTERID] = glm::rotate(MODEL[SELECTED_LETTERID], glm::radians(speed),
+                MODEL[SELECTED_LETTERID] = glm::rotate(MODEL[SELECTED_LETTERID], glm::radians(-speed),
                                                        glm::vec3(0.0, 1.0, 0.0));
                 break;
 
@@ -5286,11 +5286,11 @@ int main() {
 
     // Model matrix : an identity matrix (model will be at the origin)
 
-    MODEL[0] = glm::rotate(MODEL[0], glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
-    MODEL[1] = glm::rotate(MODEL[1], glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
-    MODEL[2] = glm::rotate(MODEL[2], glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
-    MODEL[3] = glm::rotate(MODEL[3], glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
-    MODEL[4] = glm::rotate(MODEL[4], glm::radians(-30.0f), glm::vec3(0.0, 1.0, 0.0)); //roda segundo o eixo dos yy
+    MODEL[0] = glm::mat4(1.0f);
+    MODEL[1] = glm::mat4(1.0f);
+    MODEL[2] = glm::mat4(1.0f);
+    MODEL[3] = glm::mat4(1.0f);
+    MODEL[4] = glm::mat4(1.0f);
 
 
 //        PROJECTION = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.001f, 100.0f); // In world coordinates
