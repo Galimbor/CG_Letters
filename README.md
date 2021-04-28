@@ -95,14 +95,14 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
     2. Assim que o programa é executado aparece uma janela com o título *Letra 3D* com dimensão 800x600, como se pode ver na <a href="figura1">Figura 1</a> cuja simbolos  estao alinhados ao longo do eixo do x . </p> 
  
     <figure class="Figura">
-    <img id="figura1"src="images/a.png" width="400" height="300">
+    <img id="figura1"src="images/a.png" width="400" height="300"></p>
     <figcaption>Figura 1 - Simbolos em Cena </figcaption>
     </figure>
 
     3. Os simbolos sao selecionados, pressionando as teclas `F1`, `F2`, `F3`, `F4` ou `F5`,respectivamente, para cada simbolo. O selecionado fica **Branco**, como se pode verificar na <a href="figura2">Figura 2</a>. </p> 
 
     <figure class="Figura">
-    <img id="figura2"src="images/b.png" width="400" height="300">
+    <img id="figura2"src="images/b.png" width="400" height="300"></p>
     <figcaption>Figura 2 - Simbolo Beta selecionado </figcaption>
     </figure>
 
@@ -112,7 +112,7 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         <li>Movimento do Simbolo usando botao esquerdo do rato como se pode verificar na <a href="figura3">Figura 3</a> </li>
         
         <figure class="Figura">
-        <img id="figura3"src="images/c.png" width="400" height="300">
+        <img id="figura3"src="images/c.png" width="400" height="300"></p>
         <figcaption>Figura 3 - Simbolo G selecionado e movimentado com o rato para cima e esquerda </figcaption>
         </figure>
 
@@ -120,12 +120,12 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         <li>Aproximação / Afastamento ao carregar no botão esquerdo e no botão + ou - do notepad, <a href="figura4">Figura 4</a> e <a href="figura5">Figura 5</a>, respetivamente . </li>
 
         <figure class="Figura">
-        <img id="figura4"src="images/d.png" width="400" height="300">
+        <img id="figura4"src="images/d.png" width="400" height="300"></p>
         <figcaption>Figura 4- Simbolo B selecionado e afastado usando o '-' do notepad e pressionando com o botao esquerdo do rato </figcaption>
         </figure>
 
         <figure class="Figura">
-        <img id="figura5"src="images/e.png" width="400" height="300">
+        <img id="figura5"src="images/e.png" width="400" height="300"></p>
         <figcaption>Figura 5 - Simbolo B selecionado e aproximado usando o '+' do notepad e pressionando com o botao esquerdo do rato </figcaption>
         </figure>
 
@@ -134,14 +134,14 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         <li>  seta para “Cima” : roda sobre X (sent. horário) 10 graus. Assumimos que roda quando se pressiona a seta para cima, parando na posição final quando se deixa de pressionar a tecla </li>
 
         <figure class="Figura">
-        <img id="figura6"src="images/i.png" width="400" height="300">
+        <img id="figura6"src="images/i.png" width="400" height="300"></p>
         <figcaption>Figura 6 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Cima”  </figcaption>
         </figure>
 
         <li>  seta para “Baixo” : roda sobre X (sent. anti-horário) 10 graus </li>
 
         <figure class="Figura">
-        <img id="figura7"src="images/j.png" width="400" height="300">
+        <img id="figura7"src="images/j.png" width="400" height="300"></p>
         <figcaption>Figura 7 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Baixo”  </figcaption>
         </figure>
 
@@ -150,14 +150,14 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         <li>  seta para “Direita” : roda para a direita </li>
         
         <figure class="Figura">
-        <img id="figura8"src="images/h.png" width="400" height="300">
+        <img id="figura8"src="images/h.png" width="400" height="300"></p>
          <figcaption>Figura 8 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Direita”  </figcaption>
         </figure>
 
         <li>  seta para “Esquerda” : roda para a esquerda </li>
 
         <figure class="Figura">
-        <img id="figura9"src="images/g.png" width="400" height="300">
+        <img id="figura9"src="images/g.png" width="400" height="300"></p>
            <figcaption>Figura 9 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Esquerda”  </figcaption>
         </figure>
 
@@ -165,14 +165,14 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         <li>  tecla “a”: aumenta velocidade de rotação. Ao aumentarmos a velocidade de rotação quando voltarmos a premir as teclas anteriores, a rotação será maior  </li>
 
         <li>  tecla “z”: diminui a velocidade de rotação </li>
-
+#### FALTA AQUI
         </ol>
 
 
         <li> Reset da posição das letras ao longo do eixo dos x premindo a tecla “espaço” </li>
 
         <figure class="Figura">
-        <img id="figura6"src="images/f.png" width="400" height="300">
+        <img id="figura6"src="images/f.png" width="400" height="300"></p>
         <figcaption>Figura 6 - Simbolo B estava selecionado e todos foram colocados na posiçao inicial </figcaption>
         </figure>
         </ol>
