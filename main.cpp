@@ -88,8 +88,7 @@ void letterPosition() {
     TRANSLATION[3] = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, 0.0f));
     TRANSLATION[4] = glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.0f, 0.0f));
 }
-// color[0] = fragmentcolor;
-// select color[0] = preto;
+
 
 glm::vec4 selected_colors[] = {
         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
@@ -99,24 +98,7 @@ glm::vec4 selected_colors[] = {
         glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
 };
 
-void selectLetterV2(int letter) {
 
-    glm::vec4 selected_color = glm::vec4(1, 1, 1, 1);
-    selected_colors[letter] = selected_color;
-}
-
-void reset_positions() {
-    TRANSLATION[0] = INITIAL_TRANSLATIONS[0];
-    TRANSLATION[1] = INITIAL_TRANSLATIONS[1];
-    TRANSLATION[2] = INITIAL_TRANSLATIONS[2];
-    TRANSLATION[3] = INITIAL_TRANSLATIONS[3];
-    TRANSLATION[4] = INITIAL_TRANSLATIONS[4];
-    MODEL[0] = glm::mat4(1.0f);
-    MODEL[1] = glm::mat4(1.0f);
-    MODEL[2] = glm::mat4(1.0f);
-    MODEL[3] = glm::mat4(1.0f);
-    MODEL[4] = glm::mat4(1.0f);
-}
 
 void moveLetter(GLFWwindow *window) {
     static double cursor_x;
@@ -189,6 +171,25 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+
+void selectLetterV2(int letter) {
+
+    glm::vec4 selected_color = glm::vec4(1, 1, 1, 1);
+    selected_colors[letter] = selected_color;
+}
+
+void reset_positions() {
+    TRANSLATION[0] = INITIAL_TRANSLATIONS[0];
+    TRANSLATION[1] = INITIAL_TRANSLATIONS[1];
+    TRANSLATION[2] = INITIAL_TRANSLATIONS[2];
+    TRANSLATION[3] = INITIAL_TRANSLATIONS[3];
+    TRANSLATION[4] = INITIAL_TRANSLATIONS[4];
+    MODEL[0] = glm::mat4(1.0f);
+    MODEL[1] = glm::mat4(1.0f);
+    MODEL[2] = glm::mat4(1.0f);
+    MODEL[3] = glm::mat4(1.0f);
+    MODEL[4] = glm::mat4(1.0f);
+}
 
 void selectLetter(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
