@@ -20,7 +20,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 //
 const int NUMBER_LETTERS = 5;
-float speed = 1.0f;
+float speed = 10.0f;
 
 const glm::mat4 INITIAL_TRANSLATIONS[NUMBER_LETTERS] = {
         glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 0.0f, 0.0f)),
@@ -80,6 +80,7 @@ void genColors(float *colors, int colors_count) {
 this frame and react accordingly 
 -----------------------------------------------------------------------*/
 
+
 void letterPosition() {
     TRANSLATION[0] = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 0.0f, 0.0f));
     TRANSLATION[1] = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, 0.0f, 0.0f));
@@ -91,22 +92,17 @@ void letterPosition() {
 // select color[0] = preto;
 
 glm::vec4 selected_colors[] = {
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
-        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f)
+        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+        glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
 };
 
 void selectLetterV2(int letter) {
 
     glm::vec4 selected_color = glm::vec4(1, 1, 1, 1);
     selected_colors[letter] = selected_color;
-    for (int i = 0; i < NUMBER_LETTERS; i++) {
-        if (i != letter) {
-            selected_colors[i] = glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f);
-        }
-    }
 }
 
 void reset_positions() {
@@ -179,6 +175,20 @@ void moveLetterOverY(GLFWwindow *window, char symbol) {
     }
 }
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+        moveLetterOverY(window, 'R');
+    }
+    else if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+        moveLetterOverX(window, 'U');
+    } else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+        moveLetterOverX(window, 'D');
+    } else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+        moveLetterOverY(window, 'L');
+    }
+}
+
 
 void selectLetter(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
@@ -204,18 +214,6 @@ void selectLetter(GLFWwindow *window) {
     } else if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS &&
                (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)) {
         moveLetterOverZ(window, '-');
-    } else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS &&
-               (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)) {
-        moveLetterOverX(window, 'U');
-    } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS &&
-               (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)) {
-        moveLetterOverX(window, 'D');
-    } else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS &&
-               (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)) {
-        moveLetterOverY(window, 'R');
-    } else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS &&
-               (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)) {
-        moveLetterOverY(window, 'L');
     } else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         moveLetter(window);
     } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
@@ -230,8 +228,31 @@ void selectLetter(GLFWwindow *window) {
         std::cout << speed << std::endl;
     }
 
+    glfwSetKeyCallback(window, key_callback);
 }
 
+
+
+void colorCustom(int i) {
+    if(i == 0 && SELECTED_LETTERID != 0)
+    {
+        selected_colors[i] = glm::vec4(1, 0, 0, 1);
+    } else if(i == 1 && SELECTED_LETTERID != 1) {
+        selected_colors[i] = glm::vec4(0, 1, 0, 1);
+    }else if(i == 2 && SELECTED_LETTERID != 2) {
+        selected_colors[i] = glm::vec4(0, 0, 1, 1);
+    }else if(i == 3 && SELECTED_LETTERID != 3) {
+        selected_colors[i] = glm::vec4(0, 1, 1, 1);
+    }else if(i == 4 && SELECTED_LETTERID != 4) {
+        selected_colors[i] = glm::vec4(1, 1, 0, 1);
+    }
+}
+
+void colorBlack() {
+    for (int i = 0; i < 5; ++i) {
+        if(SELECTED_LETTERID != i) selected_colors[i] = glm::vec4(0, 0, 0, 1);
+    }
+}
 
 
 // FOR LETTER Beyblades
@@ -2886,7 +2907,7 @@ int main() {
             -0.29f, 0.365f, 0.04f,
     };
 
-    static const float color_B[] = {
+    static float color_B[] = {
             0.019917032f, 0.212616708f, 0.612670898f,
             0.892475874f, 0.550852135f, 0.576453439f,
             0.364889827f, 0.347508816f, 0.681075775f,
@@ -4975,7 +4996,6 @@ int main() {
 
 
 
-
 //------------------------------------------------------------
     unsigned int VAO[NUMBER_LETTERS];
     glGenVertexArrays(NUMBER_LETTERS, VAO);
@@ -5297,15 +5317,140 @@ int main() {
     PROJECTION = glm::perspective(glm::radians(70.0f), 8.0f / 8.0f, 0.001f, 100.0f);
     letterPosition();
     // Remember, matrix multiplication is the other way around
-
-
-
     // render loop
     // -----------
+
+    selected_colors[0] = glm::vec4(0, 0, 0, 1);
+    selected_colors[1] = glm::vec4(0, 0, 0, 1);
+    selected_colors[2] = glm::vec4(0, 0, 0, 1);
+    selected_colors[3] = glm::vec4(0, 0, 0, 1);
+    selected_colors[4] = glm::vec4(0, 0, 0, 1);
+
+    float r0 = 1.0f;
+    float g0 = 0.0f;
+    float b0 = 0.0f;
+
+
+    int flag_r = 1;
+    int flag_g = 1;
+    int flag_b = 1;
+
+
     while (!glfwWindowShouldClose(window)) {
         //input
         //.....
 
+        float i = glfwGetTime();
+
+        if(i <= 0.6) {
+            colorBlack();
+            colorCustom(0);
+        } else if(i <= 1.2) {
+            colorBlack();
+            colorCustom(1);
+        } else if(i <= 1.8) {
+            colorBlack();
+            colorCustom(2);
+        } else if(i <= 2.4) {
+            colorBlack();
+            colorCustom(3);
+        } else if(i <= 3.0) {
+            colorBlack();
+            colorCustom(4);
+        } else if(i <= 3.6) {
+            colorBlack();
+        } else if(i <= 4.2) {
+            colorCustom(0);
+            colorCustom(1);
+            colorCustom(2);
+            colorCustom(3);
+            colorCustom(4);
+        } else if(i <= 4.8) {
+            colorBlack();
+        } else if(i <= 5.4) {
+            colorCustom(0);
+            colorCustom(1);
+            colorCustom(2);
+            colorCustom(3);
+            colorCustom(4);
+        } else {
+
+            if(r0 >= 1.0f) {
+                flag_r = 0;
+            } else if(r0 <= 0.0f) {
+                flag_r = 1;
+            }
+
+            if(flag_r == 1) {
+                r0 += 0.05;
+
+            } else {
+                r0 -= 0.05;
+            }
+
+            if(g0 >= 1.0f) {
+                flag_g = 0;
+            } else if(g0 <= 0.0f) {
+                flag_g = 1;
+            }
+
+            if(flag_g == 1) {
+                g0 += 0.05;
+
+            } else {
+                g0 -= 0.05;
+            }
+
+            if(b0 >= 1.0f) {
+                flag_b = 0;
+            } else if(b0 <= 0.0f) {
+                flag_b = 1;
+            }
+
+            if(flag_b == 1) {
+                b0 += 0.05;
+
+            } else {
+                b0 -= 0.05;
+            }
+
+            if (SELECTED_LETTERID == 0) {
+                selected_colors[1] = glm::vec4(0, g0, 0, 1);
+                selected_colors[2] = glm::vec4(0, 0, b0, 1);
+                selected_colors[3] = glm::vec4(0, g0, b0, 1);
+                selected_colors[4] = glm::vec4(r0, g0, 0, 1);
+            } else if(SELECTED_LETTERID == 1) {
+                selected_colors[0] = glm::vec4(r0, 0, 0, 1);
+                selected_colors[2] = glm::vec4(0, 0, b0, 1);
+                selected_colors[3] = glm::vec4(0, g0, b0, 1);
+                selected_colors[4] = glm::vec4(r0, g0, 0, 1);
+            }
+            else if(SELECTED_LETTERID == 2) {
+                selected_colors[0] = glm::vec4(r0, 0, 0, 1);
+                selected_colors[1] = glm::vec4(0, 0, b0, 1);
+                selected_colors[3] = glm::vec4(0, g0, b0, 1);
+                selected_colors[4] = glm::vec4(r0, g0, 0, 1);
+            }
+            else if(SELECTED_LETTERID == 3) {
+                selected_colors[0] = glm::vec4(r0, 0, 0, 1);
+                selected_colors[2] = glm::vec4(0, 0, b0, 1);
+                selected_colors[1] = glm::vec4(0, g0, b0, 1);
+                selected_colors[4] = glm::vec4(r0, g0, 0, 1);
+            }
+            else if(SELECTED_LETTERID == 4) {
+                selected_colors[0] = glm::vec4(r0, 0, 0, 1);
+                selected_colors[2] = glm::vec4(0, 0, b0, 1);
+                selected_colors[3] = glm::vec4(0, g0, b0, 1);
+                selected_colors[1] = glm::vec4(r0, g0, 0, 1);
+            } else {
+                    selected_colors[0] = glm::vec4(r0, 0, 0, 1);
+                    selected_colors[1] = glm::vec4(0, g0, 0, 1);
+                    selected_colors[2] = glm::vec4(0, 0, b0, 1);
+                    selected_colors[3] = glm::vec4(0, g0, b0, 1);
+                    selected_colors[4] = glm::vec4(r0, g0, 0, 1);
+            }
+
+        }
 
         selectLetter(window);
 
@@ -5410,3 +5555,6 @@ int main() {
     glfwTerminate();
     return 0;
 }
+
+
+
