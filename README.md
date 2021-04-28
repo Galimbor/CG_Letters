@@ -39,13 +39,53 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
     **BUILD** </p>
     ```
     ana@caju:~/Documents/CG/build$ cmake -S .. -B .
-
+    -- GLM is a header only library, no need to build it. Set the option GLM_TEST_ENABLE with ON to build and run the test bench
+    -- Configuring done
+    -- Generating done
+    -- Build files have been written to: /home/ana/Documents/CG/build
     ```
     </P>
 
     **MAKE** </p>
     ```
     ana@caju:~/Documents/CG/build$ make
+    [ 12%] Built target glfw
+    [ 14%] Built target wave
+    [ 16%] Built target simple
+    [ 18%] Built target gears
+    [ 20%] Built target boing
+    [ 22%] Built target heightmap
+    [ 24%] Built target splitview
+    [ 27%] Built target offscreen
+    [ 30%] Built target particles
+    [ 32%] Built target sharing
+    [ 35%] Built target title
+    [ 37%] Built target timeout
+    [ 40%] Built target monitors
+    [ 43%] Built target clipboard
+    [ 45%] Built target cursor
+    [ 47%] Built target msaa
+    [ 51%] Built target glfwinfo
+    [ 54%] Built target threads
+    [ 56%] Built target reopen
+    [ 59%] Built target triangle-vulkan
+    [ 61%] Built target opacity
+    [ 64%] Built target iconify
+    [ 66%] Built target gamma
+    [ 69%] Built target events
+    [ 71%] Built target icon
+    [ 73%] Built target joysticks
+    [ 76%] Built target windows
+    [ 79%] Built target empty
+    [ 82%] Built target inputlag
+    [ 84%] Built target tearing
+    [ 84%] Generating HTML documentation
+    [ 84%] Built target docs
+    [ 86%] Built target glad
+    Scanning dependencies of target pl4
+    [ 99%] Building CXX object pl4/CMakeFiles/pl4.dir/main.cpp.o
+    [100%] Linking CXX executable pl4
+    [100%] Built target pl4
 
     ```
     </P>
@@ -122,7 +162,8 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         </figure>
 
 
-        <li>  tecla “a”: aumenta velocidade de rotação </li>
+        <li>  tecla “a”: aumenta velocidade de rotação. Ao aumentarmos a velocidade de rotação quando voltarmos a premir as teclas anteriores, a rotação será maior  </li>
+
         <li>  tecla “z”: diminui a velocidade de rotação </li>
 
         </ol>
