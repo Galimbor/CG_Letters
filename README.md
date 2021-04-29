@@ -92,14 +92,15 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
 - run
     1. Para executar o progama corre-se o seguinte comando: ```ana@caju:~/Documents/CG/build$ ./pl4/pl4``` 
 
-    2. Assim que o programa é executado aparece uma janela com o título *Letra 3D* com dimensão 800x600, como se pode ver na <a href="figura1">Figura 1</a> cuja simbolos  estao alinhados ao longo do eixo do x . </p> 
+    2. Assim que o programa é executado aparece uma janela com o título *Letra 3D* com dimensão 800x600, como se pode ver na <a href="figura1">Figura 1</a> cuja simbolos  estao alinhados ao longo do eixo do x . Os simbolos piscam excepto o selecionado. </p> 
  
     <figure class="Figura">
     <img id="figura1"src="images/a.png" width="400" height="300"></p>
     <figcaption>Figura 1 - Simbolos em Cena </figcaption>
     </figure>
 
-    3. Os simbolos sao selecionados, pressionando as teclas `F1`, `F2`, `F3`, `F4` ou `F5`,respectivamente, para cada simbolo. O selecionado fica **Branco**, como se pode verificar na <a href="figura2">Figura 2</a>. </p> 
+    3. Os simbolos sao selecionados, pressionando as teclas `F1`, `F2`, `F3`, `F4` ou `F5`,respectivamente, para cada simbolo. O selecionado fica **Branco**, como se pode verificar na <a href="figura2">Figura 2</a>. Esta funcionalidade é implementada usando a função ```void selectLetter(GLFWwindow *window)``` </p> 
+    
 
     <figure class="Figura">
     <img id="figura2"src="images/b.png" width="400" height="300"></p>
@@ -107,9 +108,11 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
     </figure>
 
 
-    3. Quando se seleciona o simbolo pode acontecer as seguintes situações: </p>
+    4. Quando se seleciona o simbolo pode acontecer as seguintes situações: </p>
         <ol>
-        <li>Movimento do Simbolo usando botao esquerdo do rato como se pode verificar na <a href="figura3">Figura 3</a> </li>
+        <li>Movimento do Simbolo usando botao esquerdo do rato como se pode verificar na <a href="figura3">Figura 3</a>. Esta funcionalidade é implementada usando a função  
+        <i> void selectLetterGLFWwindow *window) </i> que chama  
+        <i> void moveLetter(GLFWwindow *window) </i>  </li>
         
         <figure class="Figura">
         <img id="figura3"src="images/c.png" width="400" height="300"></p>
@@ -117,28 +120,33 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         </figure>
 
 
-        <li>Aproximação / Afastamento ao carregar no botão esquerdo e no botão + ou - do notepad, <a href="figura4">Figura 4</a> e <a href="figura5">Figura 5</a>, respetivamente . </li>
+        <li>Aproximação / Afastamento ao carregar no botão esquerdo e no botão + ou - do notepad, <a href="figura4">Figura 4</a> e <a href="figura5">Figura 5</a>, respetivamente . Esta funcionalidade é implementada usando a função  <i>void selectLetterGLFWwindow *window)</i> que chama <i>void moveLetterOverZ(GLFWwindow *window, char symbol)</i> </li>
 
         <figure class="Figura">
         <img id="figura4"src="images/d.png" width="400" height="300"></p>
         <figcaption>Figura 4- Simbolo B selecionado e afastado usando o '-' do notepad e pressionando com o botao esquerdo do rato </figcaption>
-        </figure>
+        </figure> </p>
+
+        
 
         <figure class="Figura">
         <img id="figura5"src="images/e.png" width="400" height="300"></p>
         <figcaption>Figura 5 - Simbolo B selecionado e aproximado usando o '+' do notepad e pressionando com o botao esquerdo do rato </figcaption>
         </figure>
 
-        <li>  Rotações </li>
+
+        <li>  Rotações <i> void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)</i> </li>
         <ol>
-        <li>  seta para “Cima” : roda sobre X (sent. horário) 10 graus. Assumimos que roda quando se pressiona a seta para cima, parando na posição final quando se deixa de pressionar a tecla </li>
+
+
+        <li>  seta para “Cima” : roda sobre X (sent. horário) 10 graus. Assumimos que roda 10º quando se pressiona a seta para cima, parando na nova posição quando se deixa de pressionar a tecla. Chama-se  a função <i>void moveLetterOverX(GLFWwindow *window, char symbol) </i> </li>
 
         <figure class="Figura">
         <img id="figura6"src="images/i.png" width="400" height="300"></p>
         <figcaption>Figura 6 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Cima”  </figcaption>
         </figure>
 
-        <li>  seta para “Baixo” : roda sobre X (sent. anti-horário) 10 graus </li>
+        <li>  seta para “Baixo” : roda sobre X (sent. anti-horário) 10 graus.  Chama-se  a função <i>void moveLetterOverX(GLFWwindow *window, char symbol) </i> </li>
 
         <figure class="Figura">
         <img id="figura7"src="images/j.png" width="400" height="300"></p>
@@ -147,14 +155,14 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
 
 
 
-        <li>  seta para “Direita” : roda para a direita </li>
+        <li>  seta para “Direita” : roda para a direita. Chama-se  a função <i>void moveLetterOverY(GLFWwindow *window, char symbol) </i> </li>
         
         <figure class="Figura">
         <img id="figura8"src="images/h.png" width="400" height="300"></p>
          <figcaption>Figura 8 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Direita”  </figcaption>
         </figure>
 
-        <li>  seta para “Esquerda” : roda para a esquerda </li>
+        <li>  seta para “Esquerda” : roda para a esquerda. Chama-se  a função <i>void moveLetterOverY(GLFWwindow *window, char symbol) </i> </li>
 
         <figure class="Figura">
         <img id="figura9"src="images/g.png" width="400" height="300"></p>
@@ -162,17 +170,31 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
         </figure>
 
 
-        <li>  tecla “a”: aumenta velocidade de rotação. Ao aumentarmos a velocidade de rotação quando voltarmos a premir as teclas anteriores, a rotação será maior  </li>
+        <li>  tecla “a”: aumenta velocidade de rotação. Ao aumentarmos a velocidade de rotação incrementando +1 sempre que premimos a tecla. Quando voltarmos a premir as teclas anteriores, a rotação será maior  </li>
 
+         <figure class="Figura">
+        <img id="figura10"src="images/k.png" width="400" height="300"></p>
+        <figcaption>Figura 10 - Simbolo Delta estava selecionado rodado depois de aumentar a velocidade de rotação pressionando 3 vezes a seta para “Direita” </figcaption>
+        </figure>
+        </ol>
+
+        
         <li>  tecla “z”: diminui a velocidade de rotação </li>
-#### FALTA AQUI
+
+          <figure class="Figura">
+        <img id="figura11"src="images/l.png" width="400" height="300"></p>
+        <figcaption>Figura 11 - Simbolo Delta estava selecionado rodado depois de diminuir a velocidade de rotação pressionando 3 vezes a seta para “Direita” </figcaption>
+        </figure>
         </ol>
 
 
-        <li> Reset da posição das letras ao longo do eixo dos x premindo a tecla “espaço” </li>
+        </ol>
+
+
+        <li> Reset da posição das letras ao longo do eixo dos x premindo a tecla “espaço”, chamando a função  <i>void reset_positions()</i> </li>
 
         <figure class="Figura">
-        <img id="figura6"src="images/f.png" width="400" height="300"></p>
-        <figcaption>Figura 6 - Simbolo B estava selecionado e todos foram colocados na posiçao inicial </figcaption>
+        <img id="figura12"src="images/f.png" width="400" height="300"></p>
+        <figcaption>Figura 12 - Simbolo B estava selecionado e todos foram colocados na posiçao inicial </figcaption>
         </figure>
         </ol>

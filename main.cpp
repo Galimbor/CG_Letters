@@ -881,12 +881,6 @@ int main() {
     // ------------------------------------------------------------------
     // set up vertex data with depth
 // ----------------------------------------
-    // Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive
-    // vertices give a triangle. A cube has 6 faces with 2 triangles each, so this
-    // makes 6*2=12 triangles, and 12*3 vertices
-    // ------------------------------------------------------------------
-
-
 
     /// ARRAYS -----------------------LETTER BETA-------------------------------------/
 
