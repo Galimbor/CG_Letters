@@ -1,4 +1,4 @@
-# Computação Gráfica - PL4 Sopa de Simbolos
+# Computação Gráfica - PL4 Soup Letter
 > Ana Rocha, a63971 </p>
 > Artur Rodrigues, a64592 </p>
 > Ricardo Correria, a64007 </p>
@@ -7,23 +7,23 @@
 
 
 ## Objetivo
-Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
+Show the letters modeled through triangles. </p>
 
-## Plataforma de Desenvolvimento
+## Development platform
 - [Github](https://github.com/AnaLuciaRocha/CG_Group)
     1. Clone repo
     - Chosse a folder where you want to work in your own env
     - Open console 
     - $ ```git clone https://github.com/AnaLuciaRocha/CG_Group.git```
 
-- Sistema Operativo: ***Elementary***, versão 5.1.6 Hera (Distribuição Ubuntu)
-- Compilador 
+- OS: ***Elementary***, versão 5.1.6 Hera (Distribuição Ubuntu)
+- Compiler 
     ```
     gcc-10 | 10.1.0-2ubuntu1~18.04 | amd64 | GNU C compiler
     ```
     </p>
     
-- Bibliotecas Necessárias
+- Ncessary libraries
     1. glad.h
     2. glfw3.h
     3. iostrem
@@ -34,7 +34,7 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
 
 
 
-## Resultados
+## Results
 - build: </P>
     **BUILD** </p>
     ```
@@ -90,16 +90,16 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
     ```
     </P>
 - run
-    1. Para executar o progama corre-se o seguinte comando: ```ana@caju:~/Documents/CG/build$ ./pl4/pl4``` 
+    1. The execute the program, you run the following command: ```PATH/CG/build$ ./pl4/pl4``` 
 
-    2. Assim que o programa é executado aparece uma janela com o título *Letra 3D* com dimensão 800x600, como se pode ver na <a href="figura1">Figura 1</a> cuja simbolos  estao alinhados ao longo do eixo do x . Os simbolos piscam excepto o selecionado. </p> 
- 
+    2. As soon as the programi s executed, a window with the title "Letra 3D" with 800x600 dimension will show up, like you can see in <a href="figura1">Figura 1</a>, where the etters are aligned in the X axis. The letters flash, except for the selected one.
+
     <figure class="Figura">
     <img id="figura1"src="images/a.png" width="400" height="300"></p>
     <figcaption>Figura 1 - Simbolos em Cena </figcaption>
     </figure>
 
-    3. Os simbolos sao selecionados, pressionando as teclas `F1`, `F2`, `F3`, `F4` ou `F5`,respectivamente, para cada simbolo. O selecionado fica **Branco**, como se pode verificar na <a href="figura2">Figura 2</a>. Esta funcionalidade é implementada usando a função ```void selectLetter(GLFWwindow *window)``` </p> 
+    3.Symbols are selected, pressings the keys `F1`, `F2`, `F3`, `F4` ou `F5`,respectively for each symbol. The selected one stays **white**, as seen in <a href="figura2">Figura 2</a>. This functionality is implemented via use of the function ```void selectLetter(GLFWwindow *window)``` </p> 
     
 
     <figure class="Figura">
@@ -108,7 +108,7 @@ Mostrar os símbolos coloridos modelados a partir de triângulos. </p>
     </figure>
 
 
-    4. Quando se seleciona o simbolo pode acontecer as seguintes situações: </p>
+    4. One you select a letter, one of the following things can be doneMostrar os símbolos coloridos modelados a partir de triângulos. : </p>
         <ol>
         <li>Movimento do Simbolo usando botao esquerdo do rato como se pode verificar na <a href="figura3">Figura 3</a>. Esta funcionalidade é implementada usando a função  
         <i> void selectLetterGLFWwindow *window) </i> que chama  
