@@ -108,9 +108,9 @@ Show the letters modeled through triangles. </p>
     </figure>
 
 
-    4. One you select a letter, one of the following things can be doneMostrar os símbolos coloridos modelados a partir de triângulos. : </p>
+    4. One you select a letter, one of the following things can be done : </p>
         <ol>
-        <li>Movimento do Simbolo usando botao esquerdo do rato como se pode verificar na <a href="figura3">Figura 3</a>. Esta funcionalidade é implementada usando a função  
+        <li>Movement of the letter using the left mouse button, as seen in <a href="figura3">Figura 3</a>. Implement using the function
         <i> void selectLetterGLFWwindow *window) </i> que chama  
         <i> void moveLetter(GLFWwindow *window) </i>  </li>
         
@@ -120,7 +120,7 @@ Show the letters modeled through triangles. </p>
         </figure>
 
 
-        <li>Aproximação / Afastamento ao carregar no botão esquerdo e no botão + ou - do notepad, <a href="figura4">Figura 4</a> e <a href="figura5">Figura 5</a>, respetivamente . Esta funcionalidade é implementada usando a função  <i>void selectLetterGLFWwindow *window)</i> que chama <i>void moveLetterOverZ(GLFWwindow *window, char symbol)</i> </li>
+        <li> Approach / Des-approach by clicking in the '+' and '-' keys of the notepad, as seen in <a href="figura4">Figura 4</a> and <a href="figura5">Figura 5</a>, respectively. This functionality is implement using the function  <i>void selectLetterGLFWwindow *window)</i> which calls <i>void moveLetterOverZ(GLFWwindow *window, char symbol)</i> </li>
 
         <figure class="Figura">
         <img id="figura4"src="images/d.png" width="400" height="300"></p>
@@ -135,18 +135,18 @@ Show the letters modeled through triangles. </p>
         </figure>
 
 
-        <li>  Rotações <i> void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)</i> </li>
+        <li>  Rotations <i> void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)</i> </li>
         <ol>
 
 
-        <li>  seta para “Cima” : roda sobre X (sent. horário) 10 graus. Assumimos que roda 10º quando se pressiona a seta para cima, parando na nova posição quando se deixa de pressionar a tecla. Chama-se  a função <i>void moveLetterOverX(GLFWwindow *window, char symbol) </i> </li>
+        <li>  Key arrow “UP” : rotaves over the X axis (clockwise) 10 degrees. Uses the function  <i>void moveLetterOverX(GLFWwindow *window, char symbol) </i> </li>
 
         <figure class="Figura">
         <img id="figura6"src="images/i.png" width="400" height="300"></p>
         <figcaption>Figura 6 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Cima”  </figcaption>
         </figure>
 
-        <li>  seta para “Baixo” : roda sobre X (sent. anti-horário) 10 graus.  Chama-se  a função <i>void moveLetterOverX(GLFWwindow *window, char symbol) </i> </li>
+        <li>  Key arrow “Down”  :  rotaves over the X axis (anti clockwise) 10 degrees.  Uses the function <i>void moveLetterOverX(GLFWwindow *window, char symbol) </i> </li>
 
         <figure class="Figura">
         <img id="figura7"src="images/j.png" width="400" height="300"></p>
@@ -155,14 +155,14 @@ Show the letters modeled through triangles. </p>
 
 
 
-        <li>  seta para “Direita” : roda para a direita. Chama-se  a função <i>void moveLetterOverY(GLFWwindow *window, char symbol) </i> </li>
+        <li>  Key arrow “Right”  : Rotates to the right over the Y axis, 10 degrees.  Uses the function <i>void moveLetterOverY(GLFWwindow *window, char symbol) </i> </li>
         
         <figure class="Figura">
         <img id="figura8"src="images/h.png" width="400" height="300"></p>
          <figcaption>Figura 8 - Simbolo Gamme selecionado rodado pressionando 3 vezes a seta para “Direita”  </figcaption>
         </figure>
 
-        <li>  seta para “Esquerda” : roda para a esquerda. Chama-se  a função <i>void moveLetterOverY(GLFWwindow *window, char symbol) </i> </li>
+        <li>  Key arrow “Left”  : Rotates to the left over the Y axis, 10 degrees.  Uses the function <i>void moveLetterOverY(GLFWwindow *window, char symbol) </i> </li>
 
         <figure class="Figura">
         <img id="figura9"src="images/g.png" width="400" height="300"></p>
@@ -170,7 +170,7 @@ Show the letters modeled through triangles. </p>
         </figure>
 
 
-        <li>  tecla “a”: aumenta velocidade de rotação. Ao aumentarmos a velocidade de rotação incrementando +1 sempre que premimos a tecla. Quando voltarmos a premir as teclas anteriores, a rotação será maior  </li>
+        <li>  Key “a”: Increases the degrees by which the rotation movements happens.  </li>
 
          <figure class="Figura">
         <img id="figura10"src="images/k.png" width="400" height="300"></p>
@@ -179,7 +179,7 @@ Show the letters modeled through triangles. </p>
         </ol>
 
         
-        <li>  tecla “z”: diminui a velocidade de rotação </li>
+        <li>  key “z”: Decreases the degrees by which the rotation movements happens. </li>
 
           <figure class="Figura">
         <img id="figura11"src="images/l.png" width="400" height="300"></p>
@@ -191,7 +191,7 @@ Show the letters modeled through triangles. </p>
         </ol>
 
 
-        <li> Reset da posição das letras ao longo do eixo dos x premindo a tecla “espaço”, chamando a função  <i>void reset_positions()</i> </li>
+        <li> Resets the letters along the X axis by pressing the "Space" key. Uses the function  <i>void reset_positions()</i> </li>
 
         <figure class="Figura">
         <img id="figura12"src="images/f.png" width="400" height="300"></p>
